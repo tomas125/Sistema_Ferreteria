@@ -126,9 +126,9 @@ public partial class MainForm : Form
                 return;
             }
 
-            if (c is < 1 or > 999)
+            if (c is < 1 or > 9999)
             {
-                MessageBox.Show("La cantidad debe estar entre 1 y 999.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("La cantidad debe estar entre 1 y 9999.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 e.Cancel = true;
             }
         }
@@ -208,9 +208,9 @@ public partial class MainForm : Form
             return;
         }
 
-        if (nudCantidad.Value is < 1 or > 999)
+        if (nudCantidad.Value is < 1 or > 9999)
         {
-            MessageBox.Show("La cantidad debe estar entre 1 y 999.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show("La cantidad debe estar entre 1 y 9999.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             nudCantidad.Focus();
             return;
         }
@@ -353,7 +353,7 @@ public partial class MainForm : Form
     {
         dgvItems.Rows.Clear();
         txtProducto.Clear();
-        nudCantidad.Value = 1;
+        nudCantidad.Value = 0;
         txtPrecio.Clear();
         rbEfectivo.Checked = false;
         rbTransferencia.Checked = false;
@@ -409,9 +409,9 @@ public partial class MainForm : Form
 
     protected override void OnFormClosed(FormClosedEventArgs e)
     {
-        picLogo.Image?.Dispose();
-        picLogo.Image = null;
-        base.OnFormClosed(e);
+        //picLogo.Image?.Dispose();
+        //picLogo.Image = null;
+        //base.OnFormClosed(e);
     }
 
     private void CargarLogo()
@@ -422,8 +422,8 @@ public partial class MainForm : Form
             if (!File.Exists(path))
                 return;
 
-            picLogo.Image?.Dispose();
-            picLogo.Image = Image.FromFile(path);
+            //picLogo.Image?.Dispose();
+            //picLogo.Image = Image.FromFile(path);
 
             // Icono de la barra de título (junto al título de la ventana)
             using (var bmp = new Bitmap(path))
@@ -438,4 +438,6 @@ public partial class MainForm : Form
             // Si el archivo no está o es inválido, se deja el PictureBox vacío
         }
     }
+
+    //HOla
 }

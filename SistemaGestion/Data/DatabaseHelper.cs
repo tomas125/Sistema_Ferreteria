@@ -4,8 +4,21 @@ namespace SistemaGestion.Data;
 
 public static class DatabaseHelper
 {
-    public static string DatabasePath =>
-        Path.Combine(AppContext.BaseDirectory, "gestion.db");
+    public static string DatabasePath
+    {
+        get
+        {
+            string folder = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                "SistemaGestion"
+            );
+
+            if (!Directory.Exists(folder))
+                Directory.CreateDirectory(folder);
+
+            return Path.Combine(folder, "gestion.db");
+        }
+    }
 
     public static SqliteConnection GetConnection()
     {

@@ -1,6 +1,7 @@
-using System.Text;
+using SistemaGestion.Data;
 using SistemaGestion.Helpers;
 using SistemaGestion.Services;
+using System.Text;
 
 namespace SistemaGestion.Forms;
 
@@ -74,5 +75,27 @@ public partial class EstadisticasForm : Form
         if (s.Contains(';') || s.Contains('"') || s.Contains('\n'))
             return "\"" + s.Replace("\"", "\"\"") + "\"";
         return s;
+    }
+
+    private void btnBackup_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            using (var dialog = new SaveFileDialog())
+            {
+                dialog.Filter = "Base de datos (*.db)|*.db";
+                dialog.FileName = $"backup_{DateTime.Now:yyyyMMdd_HHmmss}.db";
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    File.Copy(DatabaseHelper.DatabasePath, dialog.FileName, true);
+                    MessageBox.Show("Backup exportado correctamente");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Error al exportar backup: " + ex.Message);
+        }
     }
 }
