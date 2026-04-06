@@ -18,6 +18,8 @@ partial class MainForm
     {
         components = new System.ComponentModel.Container();
         panelSuperior = new Panel();
+        panelCabeceraLogo = new Panel();
+        picLogo = new PictureBox();
         panelEntrada = new Panel();
         lblProducto = new Label();
         txtProducto = new TextBox();
@@ -25,33 +27,45 @@ partial class MainForm
         nudCantidad = new NumericUpDown();
         lblPrecio = new Label();
         txtPrecio = new TextBox();
+        lblEnterHint = new Label();
         btnAgregar = new Button();
         panelCentral = new Panel();
+        panelCabeceraGrid = new Panel();
         lblPreview = new Label();
         dgvItems = new DataGridView();
+        panelFilaInferiorItems = new Panel();
+        btnLimpiar = new Button();
         lblTotal = new Label();
         panelInferior = new Panel();
         gbFormaPago = new GroupBox();
         rbTarjeta = new RadioButton();
         rbTransferencia = new RadioButton();
         rbEfectivo = new RadioButton();
+        gbDescuento = new GroupBox();
+        lblDescuentoPct = new Label();
+        cmbDescuento = new ComboBox();
         flowBotones = new FlowLayoutPanel();
         btnGuardar = new Button();
-        btnLimpiar = new Button();
         toolStripPrincipal = new ToolStrip();
         tsbVerHistorial = new ToolStripButton();
+        tsbGestionVentas = new ToolStripButton();
         tsbEstadisticas = new ToolStripButton();
         statusStrip = new StatusStrip();
         statusFecha = new ToolStripStatusLabel();
         statusVentasHoy = new ToolStripStatusLabel();
         timerReloj = new System.Windows.Forms.Timer(components);
         panelSuperior.SuspendLayout();
+        panelCabeceraLogo.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
         panelEntrada.SuspendLayout();
         panelCentral.SuspendLayout();
+        panelCabeceraGrid.SuspendLayout();
+        panelFilaInferiorItems.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)dgvItems).BeginInit();
         ((System.ComponentModel.ISupportInitialize)nudCantidad).BeginInit();
         panelInferior.SuspendLayout();
         gbFormaPago.SuspendLayout();
+        gbDescuento.SuspendLayout();
         flowBotones.SuspendLayout();
         toolStripPrincipal.SuspendLayout();
         statusStrip.SuspendLayout();
@@ -64,8 +78,28 @@ partial class MainForm
         panelSuperior.Location = new Point(0, 0);
         panelSuperior.Name = "panelSuperior";
         panelSuperior.Padding = new Padding(0);
-        panelSuperior.Size = new Size(884, 158);
+        panelSuperior.Size = new Size(884, 248);
         panelSuperior.TabIndex = 0;
+        //
+        // panelCabeceraLogo
+        //
+        panelCabeceraLogo.BackColor = Color.WhiteSmoke;
+        panelCabeceraLogo.Controls.Add(picLogo);
+        panelCabeceraLogo.Dock = DockStyle.Top;
+        panelCabeceraLogo.Name = "panelCabeceraLogo";
+        panelCabeceraLogo.Padding = new Padding(10, 4, 10, 4);
+        panelCabeceraLogo.Size = new Size(884, 44);
+        panelCabeceraLogo.TabIndex = 2;
+        //
+        // picLogo
+        //
+        picLogo.BackColor = Color.Transparent;
+        picLogo.Location = new Point(10, 4);
+        picLogo.Name = "picLogo";
+        picLogo.Size = new Size(140, 36);
+        picLogo.SizeMode = PictureBoxSizeMode.Zoom;
+        picLogo.TabIndex = 0;
+        picLogo.TabStop = false;
         //
         // panelEntrada
         //
@@ -76,6 +110,7 @@ partial class MainForm
         panelEntrada.Controls.Add(nudCantidad);
         panelEntrada.Controls.Add(lblPrecio);
         panelEntrada.Controls.Add(txtPrecio);
+        panelEntrada.Controls.Add(lblEnterHint);
         panelEntrada.Controls.Add(btnAgregar);
         panelEntrada.Dock = DockStyle.Fill;
         panelEntrada.Name = "panelEntrada";
@@ -135,6 +170,16 @@ partial class MainForm
         txtPrecio.Size = new Size(715, 23);
         txtPrecio.TabIndex = 5;
         //
+        // lblEnterHint
+        //
+        lblEnterHint.AutoSize = true;
+        lblEnterHint.Location = new Point(140, 108);
+        lblEnterHint.MaximumSize = new Size(560, 0);
+        lblEnterHint.Name = "lblEnterHint";
+        lblEnterHint.TabIndex = 6;
+        lblEnterHint.Text = "Tip: también puede presionar Enter para agregar el producto.";
+        lblEnterHint.ForeColor = SystemColors.GrayText;
+        //
         // btnAgregar
         //
         btnAgregar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -144,17 +189,17 @@ partial class MainForm
         btnAgregar.Location = new Point(720, 104);
         btnAgregar.Name = "btnAgregar";
         btnAgregar.Size = new Size(135, 28);
-        btnAgregar.TabIndex = 6;
-        btnAgregar.Text = "Agregar";
+        btnAgregar.TabIndex = 7;
+        btnAgregar.Text = "AGREGAR";
         btnAgregar.UseVisualStyleBackColor = false;
         btnAgregar.Click += BtnAgregar_Click;
         //
         // panelCentral
         //
         panelCentral.BackColor = Color.WhiteSmoke;
-        panelCentral.Controls.Add(lblPreview);
         panelCentral.Controls.Add(dgvItems);
-        panelCentral.Controls.Add(lblTotal);
+        panelCentral.Controls.Add(panelFilaInferiorItems);
+        panelCentral.Controls.Add(panelCabeceraGrid);
         panelCentral.Dock = DockStyle.Fill;
         panelCentral.Location = new Point(0, 130);
         panelCentral.Name = "panelCentral";
@@ -162,13 +207,22 @@ partial class MainForm
         panelCentral.Size = new Size(884, 318);
         panelCentral.TabIndex = 1;
         //
+        // panelCabeceraGrid
+        //
+        panelCabeceraGrid.Controls.Add(lblPreview);
+        panelCabeceraGrid.Dock = DockStyle.Top;
+        panelCabeceraGrid.Location = new Point(12, 8);
+        panelCabeceraGrid.Name = "panelCabeceraGrid";
+        panelCabeceraGrid.Size = new Size(860, 26);
+        panelCabeceraGrid.TabIndex = 0;
+        //
         // lblPreview
         //
         lblPreview.AutoSize = true;
+        lblPreview.Dock = DockStyle.Fill;
         lblPreview.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-        lblPreview.Location = new Point(15, 8);
         lblPreview.Name = "lblPreview";
-        lblPreview.Size = new Size(55, 15);
+        lblPreview.Padding = new Padding(3, 4, 0, 0);
         lblPreview.TabIndex = 0;
         lblPreview.Text = "PREVISUALIZACIÓN:";
         //
@@ -176,40 +230,64 @@ partial class MainForm
         //
         dgvItems.AllowUserToAddRows = false;
         dgvItems.AllowUserToDeleteRows = true;
-        dgvItems.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         dgvItems.BackgroundColor = Color.White;
         dgvItems.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-        dgvItems.Location = new Point(15, 28);
+        dgvItems.Dock = DockStyle.Fill;
         dgvItems.MultiSelect = false;
         dgvItems.Name = "dgvItems";
         dgvItems.ReadOnly = false;
         dgvItems.RowHeadersVisible = false;
         dgvItems.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-        dgvItems.Size = new Size(854, 240);
         dgvItems.TabIndex = 1;
+        //
+        // panelFilaInferiorItems
+        //
+        panelFilaInferiorItems.Controls.Add(btnLimpiar);
+        panelFilaInferiorItems.Controls.Add(lblTotal);
+        panelFilaInferiorItems.Dock = DockStyle.Bottom;
+        panelFilaInferiorItems.Location = new Point(12, 266);
+        panelFilaInferiorItems.Name = "panelFilaInferiorItems";
+        panelFilaInferiorItems.Size = new Size(860, 58);
+        panelFilaInferiorItems.TabIndex = 2;
+        //
+        // btnLimpiar
+        //
+        btnLimpiar.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+        btnLimpiar.BackColor = Color.Tomato;
+        btnLimpiar.FlatStyle = FlatStyle.Flat;
+        btnLimpiar.ForeColor = Color.White;
+        btnLimpiar.Location = new Point(3, 8);
+        btnLimpiar.Name = "btnLimpiar";
+        btnLimpiar.Size = new Size(120, 30);
+        btnLimpiar.TabIndex = 0;
+        btnLimpiar.Text = "Limpiar";
+        btnLimpiar.UseVisualStyleBackColor = false;
+        btnLimpiar.Click += BtnLimpiar_Click;
         //
         // lblTotal
         //
         lblTotal.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
         lblTotal.AutoSize = true;
-        lblTotal.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+        lblTotal.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
         lblTotal.ForeColor = Color.DarkGreen;
-        lblTotal.Location = new Point(650, 278);
+        lblTotal.Location = new Point(520, 4);
+        lblTotal.TextAlign = ContentAlignment.MiddleRight;
         lblTotal.Name = "lblTotal";
         lblTotal.Size = new Size(96, 21);
-        lblTotal.TabIndex = 2;
+        lblTotal.TabIndex = 1;
         lblTotal.Text = "TOTAL: $0.00";
         //
         // panelInferior
         //
         panelInferior.BackColor = Color.WhiteSmoke;
-        panelInferior.Controls.Add(gbFormaPago);
         panelInferior.Controls.Add(flowBotones);
+        panelInferior.Controls.Add(gbDescuento);
+        panelInferior.Controls.Add(gbFormaPago);
         panelInferior.Dock = DockStyle.Bottom;
         panelInferior.Location = new Point(0, 448);
         panelInferior.Name = "panelInferior";
         panelInferior.Padding = new Padding(12, 8, 12, 8);
-        panelInferior.Size = new Size(884, 110);
+        panelInferior.Size = new Size(884, 168);
         panelInferior.TabIndex = 2;
         //
         // gbFormaPago
@@ -258,18 +336,45 @@ partial class MainForm
         rbEfectivo.Text = "Efectivo";
         rbEfectivo.UseVisualStyleBackColor = true;
         //
+        // gbDescuento
+        //
+        gbDescuento.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+        gbDescuento.Controls.Add(lblDescuentoPct);
+        gbDescuento.Controls.Add(cmbDescuento);
+        gbDescuento.Location = new Point(15, 68);
+        gbDescuento.Name = "gbDescuento";
+        gbDescuento.Size = new Size(854, 50);
+        gbDescuento.TabIndex = 1;
+        gbDescuento.TabStop = false;
+        gbDescuento.Text = "Descuento (sobre el total, con todos los ítems cargados)";
+        //
+        // lblDescuentoPct
+        //
+        lblDescuentoPct.AutoSize = true;
+        lblDescuentoPct.Location = new Point(16, 22);
+        lblDescuentoPct.Name = "lblDescuentoPct";
+        lblDescuentoPct.Size = new Size(120, 15);
+        lblDescuentoPct.Text = "Porcentaje:";
+        //
+        // cmbDescuento
+        //
+        cmbDescuento.DropDownStyle = ComboBoxStyle.DropDownList;
+        cmbDescuento.Location = new Point(140, 18);
+        cmbDescuento.Name = "cmbDescuento";
+        cmbDescuento.Size = new Size(120, 23);
+        cmbDescuento.TabIndex = 0;
+        //
         // flowBotones
         //
         flowBotones.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
         flowBotones.AutoSize = true;
         flowBotones.AutoSizeMode = AutoSizeMode.GrowAndShrink;
         flowBotones.Controls.Add(btnGuardar);
-        flowBotones.Controls.Add(btnLimpiar);
         flowBotones.FlowDirection = FlowDirection.LeftToRight;
-        flowBotones.Location = new Point(12, 68);
+        flowBotones.Location = new Point(12, 124);
         flowBotones.Name = "flowBotones";
-        flowBotones.Size = new Size(280, 36);
-        flowBotones.TabIndex = 1;
+        flowBotones.Size = new Size(140, 36);
+        flowBotones.TabIndex = 2;
         flowBotones.WrapContents = false;
         //
         // toolStripPrincipal
@@ -277,7 +382,7 @@ partial class MainForm
         toolStripPrincipal.BackColor = Color.WhiteSmoke;
         toolStripPrincipal.GripStyle = ToolStripGripStyle.Hidden;
         toolStripPrincipal.ImageScalingSize = new Size(20, 20);
-        toolStripPrincipal.Items.AddRange(new ToolStripItem[] { tsbVerHistorial, tsbEstadisticas });
+        toolStripPrincipal.Items.AddRange(new ToolStripItem[] { tsbVerHistorial, tsbGestionVentas, tsbEstadisticas });
         toolStripPrincipal.Location = new Point(0, 0);
         toolStripPrincipal.Name = "toolStripPrincipal";
         toolStripPrincipal.Padding = new Padding(8, 2, 8, 2);
@@ -301,6 +406,18 @@ partial class MainForm
         tsbVerHistorial.Padding = new Padding(10, 2, 10, 2);
         tsbVerHistorial.Click += BtnVerHistorial_Click;
         //
+        // tsbGestionVentas
+        //
+        tsbGestionVentas.DisplayStyle = ToolStripItemDisplayStyle.Text;
+        tsbGestionVentas.Name = "tsbGestionVentas";
+        tsbGestionVentas.Size = new Size(120, 21);
+        tsbGestionVentas.Text = "Gestión ventas";
+        tsbGestionVentas.BackColor = Color.White;
+        tsbGestionVentas.ForeColor = SystemColors.ControlText;
+        tsbGestionVentas.Margin = new Padding(0, 0, 8, 0);
+        tsbGestionVentas.Padding = new Padding(10, 2, 10, 2);
+        tsbGestionVentas.Click += BtnGestionVentas_Click;
+        //
         // tsbEstadisticas
         //
         tsbEstadisticas.DisplayStyle = ToolStripItemDisplayStyle.Text;
@@ -313,6 +430,7 @@ partial class MainForm
         tsbEstadisticas.Click += BtnEstadisticas_Click;
         panelSuperior.Controls.Add(panelEntrada);
         panelSuperior.Controls.Add(toolStripPrincipal);
+        panelSuperior.Controls.Add(panelCabeceraLogo);
         //
         // btnGuardar
         //
@@ -326,19 +444,6 @@ partial class MainForm
         btnGuardar.Text = "Guardar";
         btnGuardar.UseVisualStyleBackColor = false;
         btnGuardar.Click += BtnGuardar_Click;
-        //
-        // btnLimpiar
-        //
-        btnLimpiar.BackColor = Color.Tomato;
-        btnLimpiar.FlatStyle = FlatStyle.Flat;
-        btnLimpiar.ForeColor = Color.White;
-        btnLimpiar.Margin = new Padding(3, 3, 12, 3);
-        btnLimpiar.Name = "btnLimpiar";
-        btnLimpiar.Size = new Size(120, 30);
-        btnLimpiar.TabIndex = 1;
-        btnLimpiar.Text = "Limpiar";
-        btnLimpiar.UseVisualStyleBackColor = false;
-        btnLimpiar.Click += BtnLimpiar_Click;
         //
         // statusStrip
         //
@@ -380,20 +485,29 @@ partial class MainForm
         Font = new Font("Segoe UI", 9F);
         MinimumSize = new Size(700, 500);
         Name = "MainForm";
+        ShowIcon = true;
         StartPosition = FormStartPosition.CenterScreen;
         Text = "Sistema de Gestión de Ventas";
         panelEntrada.ResumeLayout(false);
         panelEntrada.PerformLayout();
+        panelCabeceraLogo.ResumeLayout(false);
+        ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
         panelSuperior.ResumeLayout(false);
         panelSuperior.PerformLayout();
         panelCentral.ResumeLayout(false);
+        panelCabeceraGrid.ResumeLayout(false);
+        panelCabeceraGrid.PerformLayout();
         panelCentral.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)dgvItems).EndInit();
+        panelFilaInferiorItems.ResumeLayout(false);
+        panelFilaInferiorItems.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)nudCantidad).EndInit();
         panelInferior.ResumeLayout(false);
         panelInferior.PerformLayout();
         gbFormaPago.ResumeLayout(false);
         gbFormaPago.PerformLayout();
+        gbDescuento.ResumeLayout(false);
+        gbDescuento.PerformLayout();
         flowBotones.ResumeLayout(false);
         toolStripPrincipal.ResumeLayout(false);
         toolStripPrincipal.PerformLayout();
@@ -404,6 +518,8 @@ partial class MainForm
     }
 
     private Panel panelSuperior;
+    private Panel panelCabeceraLogo;
+    private PictureBox picLogo;
     private Panel panelEntrada;
     private Label lblProducto;
     private TextBox txtProducto;
@@ -411,21 +527,28 @@ partial class MainForm
     private NumericUpDown nudCantidad;
     private Label lblPrecio;
     private TextBox txtPrecio;
+    private Label lblEnterHint;
     private Button btnAgregar;
     private Panel panelCentral;
+    private Panel panelCabeceraGrid;
     private Label lblPreview;
     private DataGridView dgvItems;
+    private Panel panelFilaInferiorItems;
+    private Button btnLimpiar;
     private Label lblTotal;
     private Panel panelInferior;
     private GroupBox gbFormaPago;
     private RadioButton rbEfectivo;
     private RadioButton rbTransferencia;
     private RadioButton rbTarjeta;
+    private GroupBox gbDescuento;
+    private Label lblDescuentoPct;
+    private ComboBox cmbDescuento;
     private FlowLayoutPanel flowBotones;
     private Button btnGuardar;
-    private Button btnLimpiar;
     private ToolStrip toolStripPrincipal;
     private ToolStripButton tsbVerHistorial;
+    private ToolStripButton tsbGestionVentas;
     private ToolStripButton tsbEstadisticas;
     private StatusStrip statusStrip;
     private ToolStripStatusLabel statusFecha;

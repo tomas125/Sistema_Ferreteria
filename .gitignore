@@ -1,0 +1,9 @@
+# .NET / Visual Studio
+[Bb]in/
+[Oo]bj/
+[Rr]elease/
+[Dd]ist/
+.vs/
+*.user
+*.suo
+*.userosscache

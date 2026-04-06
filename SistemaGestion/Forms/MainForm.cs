@@ -14,9 +14,24 @@ public partial class MainForm : Form
     public MainForm()
     {
         InitializeComponent();
+        cmbDescuento.Items.AddRange(new object[] { "0%", "5%", "10%", "15%", "20%" });
+        cmbDescuento.SelectedIndex = 0;
+        cmbDescuento.SelectedIndexChanged += (_, _) => ActualizarTotal();
+        txtProducto.KeyDown += Entrada_KeyDown;
+        nudCantidad.KeyDown += Entrada_KeyDown;
+        txtPrecio.KeyDown += Entrada_KeyDown;
         ConfigurarGrid();
         ActualizarTotal();
         RefrescarBarraEstado();
+    }
+
+    private void Entrada_KeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.KeyCode != Keys.Enter)
+            return;
+        e.SuppressKeyPress = true;
+        e.Handled = true;
+        BtnAgregar_Click(btnAgregar, EventArgs.Empty);
     }
 
     private static bool TryParsePrecioTexto(string? texto, out decimal precio)
@@ -229,6 +244,15 @@ public partial class MainForm : Form
         txtProducto.Focus();
     }
 
+    private static decimal ObtenerPorcentajeDescuentoDesdeCombo(int selectedIndex) => selectedIndex switch
+    {
+        1 => 5m,
+        2 => 10m,
+        3 => 15m,
+        4 => 20m,
+        _ => 0m,
+    };
+
     public void ActualizarTotal()
     {
         decimal suma = 0;
@@ -239,7 +263,23 @@ public partial class MainForm : Form
                 suma += d;
         }
 
-        lblTotal.Text = "TOTAL: " + suma.ToString("C2", CurrencyFormat.Pesos);
+        decimal pct = ObtenerPorcentajeDescuentoDesdeCombo(cmbDescuento.SelectedIndex);
+        decimal montoDesc = Math.Round(suma * (pct / 100m), 2);
+        decimal totalFinal = Math.Round(suma - montoDesc, 2);
+
+        if (pct > 0 && suma > 0)
+        {
+            lblTotal.Text =
+                "Subtotal: " + suma.ToString("C2", CurrencyFormat.Pesos)
+                + Environment.NewLine
+                + $"Descuento ({pct}%): -" + montoDesc.ToString("C2", CurrencyFormat.Pesos)
+                + Environment.NewLine
+                + "TOTAL: " + totalFinal.ToString("C2", CurrencyFormat.Pesos);
+        }
+        else
+        {
+            lblTotal.Text = "TOTAL: " + suma.ToString("C2", CurrencyFormat.Pesos);
+        }
     }
 
     private string? ObtenerFormaPago()
@@ -265,13 +305,17 @@ public partial class MainForm : Form
             return;
         }
 
-        decimal total = 0;
+        decimal subtotal = 0;
         foreach (DataGridViewRow row in dgvItems.Rows)
         {
             if (row.IsNewRow) continue;
             if (row.Cells["ColSubtotal"].Value is decimal d)
-                total += d;
+                subtotal += d;
         }
+
+        decimal pctDesc = ObtenerPorcentajeDescuentoDesdeCombo(cmbDescuento.SelectedIndex);
+        decimal montoDesc = Math.Round(subtotal * (pctDesc / 100m), 2);
+        decimal total = Math.Round(subtotal - montoDesc, 2);
 
         if (total <= 0)
         {
@@ -294,7 +338,7 @@ public partial class MainForm : Form
 
         try
         {
-            _ventaService.GuardarVenta(ClienteVentaPorDefecto, forma, items);
+            _ventaService.GuardarVenta(ClienteVentaPorDefecto, forma, items, total);
             MessageBox.Show("SE REGISTRÓ CORRECTAMENTE LA VENTA.", "Venta", MessageBoxButtons.OK, MessageBoxIcon.Information);
             LimpiarFormulario();
             RefrescarBarraEstado();
@@ -314,6 +358,7 @@ public partial class MainForm : Form
         rbEfectivo.Checked = false;
         rbTransferencia.Checked = false;
         rbTarjeta.Checked = false;
+        cmbDescuento.SelectedIndex = 0;
         ActualizarTotal();
     }
 
@@ -328,6 +373,12 @@ public partial class MainForm : Form
     private void BtnEstadisticas_Click(object? sender, EventArgs e)
     {
         using var f = new EstadisticasForm();
+        f.ShowDialog(this);
+    }
+
+    private void BtnGestionVentas_Click(object? sender, EventArgs e)
+    {
+        using var f = new GestionVentasForm();
         f.ShowDialog(this);
     }
 
@@ -352,6 +403,39 @@ public partial class MainForm : Form
     protected override void OnLoad(EventArgs e)
     {
         base.OnLoad(e);
+        CargarLogo();
         RefrescarBarraEstado();
+    }
+
+    protected override void OnFormClosed(FormClosedEventArgs e)
+    {
+        picLogo.Image?.Dispose();
+        picLogo.Image = null;
+        base.OnFormClosed(e);
+    }
+
+    private void CargarLogo()
+    {
+        try
+        {
+            var path = Path.Combine(AppContext.BaseDirectory, "IMAGENES", "logo.png");
+            if (!File.Exists(path))
+                return;
+
+            picLogo.Image?.Dispose();
+            picLogo.Image = Image.FromFile(path);
+
+            // Icono de la barra de título (junto al título de la ventana)
+            using (var bmp = new Bitmap(path))
+            {
+                Icon = Icon.FromHandle(bmp.GetHicon());
+            }
+
+            ShowIcon = true;
+        }
+        catch
+        {
+            // Si el archivo no está o es inválido, se deja el PictureBox vacío
+        }
     }
 }

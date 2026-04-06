@@ -26,7 +26,7 @@ public partial class HistorialForm : Form
         cmbFormaPago.Items.AddRange(new object[] { "(Todas)", "Efectivo", "Transferencia", "Tarjeta" });
         cmbFormaPago.SelectedIndex = 0;
 
-        cmbEstado.Items.AddRange(new object[] { "(Todos)", "Pendiente", "En Curso", "Entregado", "Cancelado" });
+        cmbEstado.Items.AddRange(new object[] { "(Todos)", "FINALIZADO", "En Curso", "Entregado", "Cancelado", "Pendiente" });
         cmbEstado.SelectedIndex = 0;
     }
 

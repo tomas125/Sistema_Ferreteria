@@ -118,6 +118,15 @@ public static class DatabaseHelper
                     """;
                 insert.ExecuteNonQuery();
             }
+
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = """
+                    UPDATE Ventas SET Estado = 'FINALIZADO'
+                    WHERE Estado = 'Pendiente';
+                    """;
+                cmd.ExecuteNonQuery();
+            }
         }
         catch (Exception ex)
         {

@@ -14,7 +14,7 @@ public partial class DetalleVentaForm : Form
         _ventaId = ventaId;
         InitializeComponent();
         ConfigurarGrid();
-        cmbEstado.Items.AddRange(new object[] { "Pendiente", "En Curso", "Entregado", "Cancelado" });
+        cmbEstado.Items.AddRange(new object[] { "FINALIZADO", "En Curso", "Entregado", "Cancelado", "Pendiente" });
         CargarDatos();
     }
 

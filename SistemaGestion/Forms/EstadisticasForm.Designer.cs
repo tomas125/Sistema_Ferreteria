@@ -18,11 +18,8 @@ partial class EstadisticasForm
     {
         lblMes = new Label();
         lblTotalMes = new Label();
-        lblProyectosCerrados = new Label();
         lblFormaPago = new Label();
-        lblProyeccion = new Label();
-        lblSociosTitulo = new Label();
-        flowSocios = new FlowLayoutPanel();
+        btnExportarMes = new Button();
         btnCerrar = new Button();
         SuspendLayout();
         //
@@ -40,74 +37,48 @@ partial class EstadisticasForm
         lblTotalMes.MaximumSize = new Size(640, 0);
         lblTotalMes.Text = "Total vendido ($): —";
         //
-        // lblProyectosCerrados
-        //
-        lblProyectosCerrados.AutoSize = true;
-        lblProyectosCerrados.Location = new Point(16, 76);
-        lblProyectosCerrados.Text = "Proyectos cerrados (Entregado): —";
-        //
         // lblFormaPago
         //
         lblFormaPago.AutoSize = true;
-        lblFormaPago.Location = new Point(16, 104);
+        lblFormaPago.Location = new Point(16, 76);
         lblFormaPago.MaximumSize = new Size(640, 0);
         lblFormaPago.Text = "Forma de pago más utilizada: —";
         //
-        // lblProyeccion
+        // btnExportarMes
         //
-        lblProyeccion.AutoSize = true;
-        lblProyeccion.Location = new Point(16, 132);
-        lblProyeccion.MaximumSize = new Size(640, 0);
-        lblProyeccion.Text = "Proyección del mes ($): —";
-        //
-        // lblSociosTitulo
-        //
-        lblSociosTitulo.AutoSize = true;
-        lblSociosTitulo.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-        lblSociosTitulo.Location = new Point(16, 170);
-        lblSociosTitulo.Text = "Ganancia por socio (mes)";
-        //
-        // flowSocios
-        //
-        flowSocios.FlowDirection = FlowDirection.TopDown;
-        flowSocios.Location = new Point(16, 195);
-        flowSocios.Size = new Size(640, 120);
-        flowSocios.AutoScroll = true;
+        btnExportarMes.Location = new Point(16, 118);
+        btnExportarMes.Size = new Size(220, 30);
+        btnExportarMes.Text = "Exportar historial del mes (CSV)";
+        btnExportarMes.Click += BtnExportarMes_Click;
         //
         // btnCerrar
         //
         btnCerrar.DialogResult = DialogResult.Cancel;
         btnCerrar.Text = "Cerrar";
         btnCerrar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-        btnCerrar.Location = new Point(560, 340);
+        btnCerrar.Location = new Point(560, 200);
         //
         // EstadisticasForm
         //
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(680, 390);
+        ClientSize = new Size(680, 250);
         Controls.Add(btnCerrar);
-        Controls.Add(flowSocios);
-        Controls.Add(lblSociosTitulo);
-        Controls.Add(lblProyeccion);
+        Controls.Add(btnExportarMes);
         Controls.Add(lblFormaPago);
-        Controls.Add(lblProyectosCerrados);
         Controls.Add(lblTotalMes);
         Controls.Add(lblMes);
         Font = new Font("Segoe UI", 9F);
         BackColor = Color.WhiteSmoke;
         Text = "Estadísticas";
         StartPosition = FormStartPosition.CenterParent;
-        MinimumSize = new Size(500, 320);
+        MinimumSize = new Size(500, 260);
         ResumeLayout(false);
         PerformLayout();
     }
 
     private Label lblMes;
     private Label lblTotalMes;
-    private Label lblProyectosCerrados;
     private Label lblFormaPago;
-    private Label lblProyeccion;
-    private Label lblSociosTitulo;
-    private FlowLayoutPanel flowSocios;
+    private Button btnExportarMes;
     private Button btnCerrar;
 }

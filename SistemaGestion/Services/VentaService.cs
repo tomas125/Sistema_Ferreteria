@@ -29,7 +29,7 @@ public class VentaService
         }
     }
 
-    public int GuardarVenta(string nombreCliente, string formaPago, IReadOnlyList<DetalleVenta> items)
+    public int GuardarVenta(string nombreCliente, string formaPago, IReadOnlyList<DetalleVenta> items, decimal? totalVenta = null)
     {
         if (items.Count == 0)
             throw new InvalidOperationException("No hay ítems para guardar.");
@@ -42,7 +42,7 @@ public class VentaService
 
             int clienteId = ObtenerOCrearClienteId(conn, tx, nombreCliente);
 
-            decimal total = items.Sum(i => i.Subtotal);
+            decimal total = totalVenta ?? items.Sum(i => i.Subtotal);
 
             int ventaId;
             using (var cmd = conn.CreateCommand())
@@ -50,7 +50,7 @@ public class VentaService
                 cmd.Transaction = tx;
                 cmd.CommandText = """
                     INSERT INTO Ventas (ClienteId, Total, FormaPago, Estado)
-                    VALUES ($cid, $tot, $fp, 'Pendiente') RETURNING Id;
+                    VALUES ($cid, $tot, $fp, 'FINALIZADO') RETURNING Id;
                     """;
                 cmd.Parameters.AddWithValue("$cid", clienteId);
                 cmd.Parameters.AddWithValue("$tot", total);
@@ -150,6 +150,44 @@ public class VentaService
             sql += " ORDER BY v.FechaVenta DESC, v.Id DESC;";
             cmd.CommandText = sql;
 
+            using var r = cmd.ExecuteReader();
+            while (r.Read())
+            {
+                list.Add(new Venta
+                {
+                    Id = r.GetInt32(0),
+                    FechaVenta = r.IsDBNull(1) ? null : r.GetString(1),
+                    ClienteNombre = r.IsDBNull(2) ? null : r.GetString(2),
+                    Total = r.GetDecimal(3),
+                    FormaPago = r.GetString(4),
+                    Estado = r.GetString(5),
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error al listar ventas: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        return list;
+    }
+
+    /// <summary>Ventas que aún requieren seguimiento (no finalizadas ni canceladas).</summary>
+    public IReadOnlyList<Venta> ListarVentasPendientesGestion()
+    {
+        var list = new List<Venta>();
+        try
+        {
+            using var conn = DatabaseHelper.GetConnection();
+            conn.Open();
+            using var cmd = conn.CreateCommand();
+            cmd.CommandText = """
+                SELECT v.Id, v.FechaVenta, c.Nombre, v.Total, v.FormaPago, v.Estado
+                FROM Ventas v
+                LEFT JOIN Clientes c ON c.Id = v.ClienteId
+                WHERE v.Estado NOT IN ('FINALIZADO', 'Cancelado')
+                ORDER BY v.FechaVenta DESC, v.Id DESC;
+                """;
             using var r = cmd.ExecuteReader();
             while (r.Read())
             {
