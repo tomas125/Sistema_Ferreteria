@@ -1,0 +1,6 @@
+{
+  "version": "1.0.2",
+  "downloadUrl": "https://github.com/TU_ORG/TU_REPO/releases/download/v1.0.2/SistemaGestion_Instalador.exe",
+  "sha256": "",
+  "releaseNotes": "Ejemplo: manifiesto servido desde GitHub (raw o desde el release)."
+}

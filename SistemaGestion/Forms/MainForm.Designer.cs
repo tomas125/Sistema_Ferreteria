@@ -31,6 +31,7 @@ partial class MainForm
         tsbVerHistorial = new ToolStripButton();
         tsbGestionVentas = new ToolStripButton();
         tsbEstadisticas = new ToolStripButton();
+        tsbComoActualizar = new ToolStripButton();
         panelCentral = new Panel();
         dgvItems = new DataGridView();
         panelFilaInferiorItems = new Panel();
@@ -179,7 +180,7 @@ partial class MainForm
         toolStripPrincipal.BackColor = Color.WhiteSmoke;
         toolStripPrincipal.GripStyle = ToolStripGripStyle.Hidden;
         toolStripPrincipal.ImageScalingSize = new Size(20, 20);
-        toolStripPrincipal.Items.AddRange(new ToolStripItem[] { tsbVerHistorial, tsbGestionVentas, tsbEstadisticas });
+        toolStripPrincipal.Items.AddRange(new ToolStripItem[] { tsbVerHistorial, tsbGestionVentas, tsbEstadisticas, tsbComoActualizar });
         toolStripPrincipal.Location = new Point(0, 0);
         toolStripPrincipal.Name = "toolStripPrincipal";
         toolStripPrincipal.Padding = new Padding(8, 2, 8, 2);
@@ -223,6 +224,19 @@ partial class MainForm
         tsbEstadisticas.Size = new Size(91, 23);
         tsbEstadisticas.Text = "Estadísticas";
         tsbEstadisticas.Click += BtnEstadisticas_Click;
+        // 
+        // tsbComoActualizar
+        // 
+        tsbComoActualizar.Alignment = ToolStripItemAlignment.Right;
+        tsbComoActualizar.BackColor = Color.White;
+        tsbComoActualizar.DisplayStyle = ToolStripItemDisplayStyle.Text;
+        tsbComoActualizar.ForeColor = SystemColors.ControlText;
+        tsbComoActualizar.Name = "tsbComoActualizar";
+        tsbComoActualizar.Padding = new Padding(10, 2, 10, 2);
+        tsbComoActualizar.Size = new Size(140, 26);
+        tsbComoActualizar.Text = "Buscar actualización";
+        tsbComoActualizar.ToolTipText = "Descarga la última versión desde internet (requiere configuración del proveedor)";
+        tsbComoActualizar.Click += TsbComoActualizar_Click;
         // 
         // panelCentral
         // 
@@ -535,6 +549,7 @@ partial class MainForm
     private ToolStripButton tsbVerHistorial;
     private ToolStripButton tsbGestionVentas;
     private ToolStripButton tsbEstadisticas;
+    private ToolStripButton tsbComoActualizar;
     private StatusStrip statusStrip;
     private ToolStripStatusLabel statusFecha;
     private ToolStripStatusLabel statusVentasHoy;

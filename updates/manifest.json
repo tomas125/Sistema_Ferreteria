@@ -1,6 +1,6 @@
 {
-  "version": "1.0.1",
-  "downloadUrl": "https://github.com/tomas125/Sistema_Ferreteria/releases/download/v1.0.1/SistemaGestion_Instalador.exe",
-  "sha256": "",
-  "releaseNotes": "Primera publicación de actualizaciones por internet. Creá el release v1.0.1 en GitHub con este .exe adjunto."
+  "version": "1.0.2",
+  "downloadUrl": "https://github.com/tomas125/Sistema_Ferreteria/releases/download/v1.0.2/SistemaGestion_Instalador.exe",
+  "sha256": "DCEB86BE4273771412BDB20CD36FDDD7A889D832424FF44F919B7E67B08967F5",
+  "releaseNotes": "Historial: selección múltiple (Mayús/Ctrl) y marcar varias ventas como FINALIZADO. Actualizaciones por internet y base de datos en perfil de usuario."
 }

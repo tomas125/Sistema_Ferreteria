@@ -12,11 +12,11 @@ namespace SistemaGestion.Helpers
         public static void CrearBackup()
         {
             string dbPath = DatabaseHelper.DatabasePath;
+            string? dbDir = Path.GetDirectoryName(dbPath);
+            if (string.IsNullOrEmpty(dbDir))
+                return;
 
-            string backupFolder = Path.Combine(
-                Path.GetDirectoryName(dbPath),
-                "backups"
-            );
+            string backupFolder = Path.Combine(dbDir, "backups");
 
             if (!Directory.Exists(backupFolder))
                 Directory.CreateDirectory(backupFolder);

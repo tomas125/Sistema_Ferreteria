@@ -4,20 +4,52 @@ namespace SistemaGestion.Data;
 
 public static class DatabaseHelper
 {
-    public static string DatabasePath
+    private const string DataFolderName = "SistemaGestion";
+    private const string DbFileName = "gestion.db";
+
+    /// <summary>
+    /// Base de datos por usuario en LocalAppData (no se toca al reinstalar el programa en Archivos de programa).
+    /// Si existía copia en ProgramData (versiones anteriores), se copia una vez al nuevo lugar.
+    /// </summary>
+    private static readonly Lazy<string> _databasePath = new(ResolveDatabasePath);
+
+    public static string DatabasePath => _databasePath.Value;
+
+    private static string ResolveDatabasePath()
     {
-        get
+        string localRoot = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        string localFolder = Path.Combine(localRoot, DataFolderName);
+        Directory.CreateDirectory(localFolder);
+        string localDb = Path.Combine(localFolder, DbFileName);
+
+        if (File.Exists(localDb))
+            return localDb;
+
+        string legacyFolder = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+            DataFolderName);
+        string legacyDb = Path.Combine(legacyFolder, DbFileName);
+
+        if (!File.Exists(legacyDb))
+            return localDb;
+
+        try
         {
-            string folder = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
-                "SistemaGestion"
-            );
-
-            if (!Directory.Exists(folder))
-                Directory.CreateDirectory(folder);
-
-            return Path.Combine(folder, "gestion.db");
+            File.Copy(legacyDb, localDb, overwrite: false);
         }
+        catch (Exception ex)
+        {
+            MessageBox.Show(
+                "Los datos anteriores están en la carpeta compartida del sistema y no se pudieron copiar al perfil de usuario. "
+                + "Se seguirá usando esa ubicación para no perder información.\n\n"
+                + ex.Message,
+                "Base de datos",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning);
+            return legacyDb;
+        }
+
+        return localDb;
     }
 
     public static SqliteConnection GetConnection()

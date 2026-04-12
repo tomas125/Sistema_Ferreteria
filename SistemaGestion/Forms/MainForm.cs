@@ -29,6 +29,10 @@ public partial class MainForm : Form
         AjustarAnchoEtiquetaTotal();
         AlinearBotonAgregar();
         RefrescarBarraEstado();
+        var ver = AppUpdateService.GetCurrentAssemblyVersion();
+        statusVersion.Text = ver.Revision > 0
+            ? $"Versión: {ver.Major}.{ver.Minor}.{ver.Build}.{ver.Revision}"
+            : $"Versión: {ver.Major}.{ver.Minor}.{ver.Build}";
     }
 
     // Ubicación coherente con el ancho real del panel (evita recorte por coordenadas absurdas del diseñador).
@@ -419,6 +423,19 @@ public partial class MainForm : Form
     {
         using var f = new EstadisticasForm();
         f.ShowDialog(this);
+    }
+
+    private async void TsbComoActualizar_Click(object? sender, EventArgs e)
+    {
+        tsbComoActualizar.Enabled = false;
+        try
+        {
+            await AppUpdateService.RunUpdateCheckAsync(this);
+        }
+        finally
+        {
+            tsbComoActualizar.Enabled = true;
+        }
     }
 
     // Abre ventana modal de gestión de ventas pendientes.

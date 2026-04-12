@@ -301,4 +301,39 @@ public class VentaService
         }
     }
 
+    /// <summary>
+    /// Actualiza el estado de varias ventas en una sola transacción.
+    /// </summary>
+    public int ActualizarEstadoLote(IReadOnlyList<int> ventaIds, string nuevoEstado)
+    {
+        var ids = ventaIds.Distinct().Where(id => id > 0).ToList();
+        if (ids.Count == 0)
+            return 0;
+
+        try
+        {
+            using var conn = DatabaseHelper.GetConnection();
+            conn.Open();
+            using var tx = conn.BeginTransaction();
+            int afectadas = 0;
+            foreach (var id in ids)
+            {
+                using var cmd = conn.CreateCommand();
+                cmd.Transaction = tx;
+                cmd.CommandText = "UPDATE Ventas SET Estado = $e WHERE Id = $id;";
+                cmd.Parameters.AddWithValue("$e", nuevoEstado);
+                cmd.Parameters.AddWithValue("$id", id);
+                afectadas += cmd.ExecuteNonQuery();
+            }
+
+            tx.Commit();
+            return afectadas;
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error al actualizar estados: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return 0;
+        }
+    }
+
 }

@@ -29,6 +29,7 @@ partial class HistorialForm
         btnExportar = new Button();
         dgvVentas = new DataGridView();
         panelBottom = new Panel();
+        btnMarcarFinalizado = new Button();
         btnCerrar = new Button();
         panelFiltros.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)dgvVentas).BeginInit();
@@ -118,7 +119,7 @@ partial class HistorialForm
         dgvVentas.AllowUserToAddRows = false;
         dgvVentas.AllowUserToDeleteRows = false;
         dgvVentas.Dock = DockStyle.Fill;
-        dgvVentas.MultiSelect = false;
+        dgvVentas.MultiSelect = true;
         dgvVentas.ReadOnly = true;
         dgvVentas.RowHeadersVisible = false;
         dgvVentas.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -126,14 +127,25 @@ partial class HistorialForm
         //
         // panelBottom
         //
+        panelBottom.Controls.Add(btnMarcarFinalizado);
         panelBottom.Controls.Add(btnCerrar);
         panelBottom.Dock = DockStyle.Bottom;
         panelBottom.Height = 44;
         //
+        // btnMarcarFinalizado
+        //
+        btnMarcarFinalizado.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        btnMarcarFinalizado.Location = new Point(360, 8);
+        btnMarcarFinalizado.Size = new Size(260, 28);
+        btnMarcarFinalizado.Text = "Marcar selección como FINALIZADO";
+        btnMarcarFinalizado.UseVisualStyleBackColor = true;
+        btnMarcarFinalizado.Click += BtnMarcarFinalizado_Click;
+        //
         // btnCerrar
         //
-        btnCerrar.Anchor = AnchorStyles.Right;
-        btnCerrar.Location = new Point(650, 8);
+        btnCerrar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        btnCerrar.Location = new Point(630, 8);
+        btnCerrar.Size = new Size(100, 28);
         btnCerrar.Text = "Cerrar";
         btnCerrar.DialogResult = DialogResult.Cancel;
         //
@@ -169,5 +181,6 @@ partial class HistorialForm
     private Button btnExportar;
     private DataGridView dgvVentas;
     private Panel panelBottom;
+    private Button btnMarcarFinalizado;
     private Button btnCerrar;
 }

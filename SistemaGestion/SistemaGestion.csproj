@@ -7,6 +7,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationIcon>IMAGENES\logo.ico</ApplicationIcon>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <!-- Solo empaqueta logo dentro del .exe cuando publicás con PublishSingleFile=true -->
@@ -19,6 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="update-config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="IMAGENES\logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

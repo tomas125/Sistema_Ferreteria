@@ -82,6 +82,55 @@ public partial class HistorialForm : Form
     // Evento de botón para ejecutar el filtrado actual.
     private void BtnFiltrar_Click(object? sender, EventArgs e) => CargarDatos();
 
+    private void BtnMarcarFinalizado_Click(object? sender, EventArgs e)
+    {
+        var ids = dgvVentas.SelectedRows.Cast<DataGridViewRow>()
+            .Where(r => !r.IsNewRow)
+            .Select(TryGetRowVentaId)
+            .Where(id => id.HasValue)
+            .Select(id => id!.Value)
+            .Distinct()
+            .ToList();
+
+        if (ids.Count == 0)
+        {
+            MessageBox.Show(
+                this,
+                "Seleccione al menos una fila (clic en la fila, Ctrl+clic para varias, Mayús+clic para un rango).",
+                "Historial de ventas",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+            return;
+        }
+
+        var pregunta = ids.Count == 1
+            ? $"¿Marcar la venta #{ids[0]} como FINALIZADO?"
+            : $"¿Marcar las {ids.Count} ventas seleccionadas como FINALIZADO?";
+
+        if (MessageBox.Show(this, pregunta, "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+            return;
+
+        int n = _ventaService.ActualizarEstadoLote(ids, "FINALIZADO");
+        if (n <= 0)
+            return;
+
+        MessageBox.Show(
+            this,
+            n == 1 ? "Estado actualizado a FINALIZADO." : $"{n} ventas actualizadas a FINALIZADO.",
+            "Historial de ventas",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Information);
+        CargarDatos();
+    }
+
+    private static int? TryGetRowVentaId(DataGridViewRow row)
+    {
+        var idObj = row.Cells["Id"].Value;
+        if (idObj is int id)
+            return id;
+        return int.TryParse(idObj?.ToString(), out int x) ? x : null;
+    }
+
     // Permite abrir detalle de una venta con doble clic.
     private void DgvVentas_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
     {
