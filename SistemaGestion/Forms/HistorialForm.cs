@@ -16,6 +16,11 @@ public partial class HistorialForm : Form
         ConfigurarFiltros();
         ConfigurarGrid();
         CargarDatos();
+
+        dtpDesde.ValueChanged += (_, _) => CargarDatos();
+        dtpHasta.ValueChanged += (_, _) => CargarDatos();
+        cmbFormaPago.SelectedIndexChanged += (_, _) => CargarDatos();
+        cmbEstado.SelectedIndexChanged += (_, _) => CargarDatos();
     }
 
     // Define valores por defecto de filtros (rango mensual actual, forma de pago y estado).
