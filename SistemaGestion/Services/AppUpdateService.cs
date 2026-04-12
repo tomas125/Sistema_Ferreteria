@@ -246,7 +246,7 @@ public static class AppUpdateService
             "La descarga finalizó correctamente.\n\n"
             + "Se cerrará este programa y se aplicará la actualización en segundo plano "
             + "(sin ventana del instalador). Guarde cualquier trabajo pendiente.\n\n"
-            + "Al terminar, abra de nuevo el sistema desde el acceso directo o el menú Inicio.\n\n"
+            + "Al terminar, el instalador volverá a abrir el sistema automáticamente.\n\n"
             + "¿Continuar?",
             "Actualizar sistema",
             MessageBoxButtons.YesNo,

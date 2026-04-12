@@ -3,7 +3,7 @@
 
 #define MyAppName "Sistema Gestion Ferreteria"
 #define MyAppExeName "SistemaGestion.exe"
-#define MyAppVersion "1.0.7"
+#define MyAppVersion "1.0.8"
 #define PublishDir "..\dist\win-x64-instalador"
 
 [Setup]
@@ -43,4 +43,5 @@ Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\IMAGENES\logo.ico"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#MyAppName}}"; Flags: nowait postinstall skipifsilent
+; Sin skipifsilent: tras /VERYSILENT (actualización por internet) Inno vuelve a lanzar el programa.
+Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#MyAppName}}"; Flags: nowait postinstall
