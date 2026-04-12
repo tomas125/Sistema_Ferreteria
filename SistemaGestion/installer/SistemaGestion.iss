@@ -3,7 +3,7 @@
 
 #define MyAppName "Sistema Gestion Ferreteria"
 #define MyAppExeName "SistemaGestion.exe"
-#define MyAppVersion "1.0.6"
+#define MyAppVersion "1.0.7"
 #define PublishDir "..\dist\win-x64-instalador"
 
 [Setup]

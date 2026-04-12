@@ -9,7 +9,7 @@ static class Program
     [STAThread]
     static void Main()
     {
-        // v1.0.5 — cambio mínimo para probar actualización por internet.
+        // v1.0.7 — prueba leve (solo para verificar actualización).
         // Configura el entorno base de WinForms (DPI, estilos visuales, fuente por defecto, etc.).
         ApplicationConfiguration.Initialize();
         try
