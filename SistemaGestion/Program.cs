@@ -9,7 +9,7 @@ static class Program
     [STAThread]
     static void Main()
     {
-        // v1.0.8 — tras actualizar silenciosa, Inno vuelve a abrir el programa.
+        // v1.0.9
         // Configura el entorno base de WinForms (DPI, estilos visuales, fuente por defecto, etc.).
         ApplicationConfiguration.Initialize();
         try
