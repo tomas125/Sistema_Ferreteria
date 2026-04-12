@@ -292,6 +292,16 @@ public static class AppUpdateService
     {
         using var response = await Http.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
             .ConfigureAwait(false);
+        if (response.StatusCode == HttpStatusCode.NotFound)
+        {
+            throw new HttpRequestException(
+                "El instalador no está en el servidor (error 404). "
+                + "El proveedor debe publicar un Release en GitHub con el archivo adjunto y el mismo nombre que indica el manifiesto.\n\n"
+                + downloadUrl,
+                null,
+                HttpStatusCode.NotFound);
+        }
+
         response.EnsureSuccessStatusCode();
         var total = response.Content.Headers.ContentLength;
         await using var source = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
