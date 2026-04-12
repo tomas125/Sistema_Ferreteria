@@ -244,9 +244,10 @@ public static class AppUpdateService
         var instalar = MessageBox.Show(
             owner,
             "La descarga finalizó correctamente.\n\n"
-            + "Se cerrará el sistema para poder instalar la actualización. "
-            + "Guarde cualquier trabajo pendiente.\n\n"
-            + "¿Abrir el instalador ahora?",
+            + "Se cerrará este programa y se aplicará la actualización en segundo plano "
+            + "(sin ventana del instalador). Guarde cualquier trabajo pendiente.\n\n"
+            + "Al terminar, abra de nuevo el sistema desde el acceso directo o el menú Inicio.\n\n"
+            + "¿Continuar?",
             "Actualizar sistema",
             MessageBoxButtons.YesNo,
             MessageBoxIcon.Question);
@@ -262,11 +263,15 @@ public static class AppUpdateService
             return;
         }
 
+        // Inno Setup: instalación silenciosa (sin asistente). Ver https://jrsoftware.org/ishelp/topic_setupcmdline.htm
+        const string silentInnoArgs = "/VERYSILENT /NORESTART /SUPPRESSMSGBOXES /CLOSEAPPLICATIONS /SP-";
+
         try
         {
             Process.Start(new ProcessStartInfo
             {
                 FileName = tempPath,
+                Arguments = silentInnoArgs,
                 UseShellExecute = true,
             });
         }
