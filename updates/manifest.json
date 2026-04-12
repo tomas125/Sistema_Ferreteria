@@ -1,6 +1,6 @@
 {
-  "version": "1.0.5",
-  "downloadUrl": "https://github.com/tomas125/Sistema_Ferreteria/releases/download/v1.0.5/SistemaGestion_Instalador.exe",
-  "sha256": "C2D465F3DA78EDD7C4555CE87AB7BDAC615D039E816635BCDCDE3BDA78325594",
-  "releaseNotes": "Prueba 1.0.5 (cambio mínimo). Instalador silencioso al actualizar."
+  "version": "1.0.6",
+  "downloadUrl": "https://github.com/tomas125/Sistema_Ferreteria/releases/download/v1.0.6/SistemaGestion_Instalador.exe",
+  "sha256": "FA90EDA9A85A0FCEC9004986C5ED842DBB2A0712E17A2E8ACAD604996A41986A",
+  "releaseNotes": "Correccion: al actualizar ya no se cuelga (salida inmediata para que Inno pueda reemplazar archivos). Instalacion silenciosa."
 }

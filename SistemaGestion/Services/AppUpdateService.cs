@@ -279,7 +279,14 @@ public static class AppUpdateService
             psi.ArgumentList.Add("/CLOSEAPPLICATIONS");
             psi.ArgumentList.Add("/SP-");
             psi.ArgumentList.Add("/CURRENTUSER");
-            Process.Start(psi);
+            var proc = Process.Start(psi);
+            if (proc is null)
+                throw new InvalidOperationException("No se pudo crear el proceso del instalador.");
+
+            // Application.Exit() tarda en liberar DLLs; el instalador (/CLOSEAPPLICATIONS) puede quedar
+            // esperando y la ventana parece colgada. Salida inmediata del proceso.
+            proc.Dispose();
+            Environment.Exit(0);
         }
         catch (Exception ex)
         {
@@ -291,8 +298,6 @@ public static class AppUpdateService
                 MessageBoxIcon.Error);
             return;
         }
-
-        Application.Exit();
     }
 
     public static async Task DownloadInstallerAsync(
