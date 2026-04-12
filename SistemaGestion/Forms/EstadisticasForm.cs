@@ -10,12 +10,15 @@ public partial class EstadisticasForm : Form
     private readonly ReporteService _reporteService = new();
     private readonly VentaService _ventaService = new();
 
+    // Constructor de estadísticas: inicializa componentes y carga métricas del mes en curso.
     public EstadisticasForm()
     {
         InitializeComponent();
         Cargar();
     }
 
+    // Obtiene resumen mensual y actualiza etiquetas informativas de la vista.
+    // Cuidado: depende del servicio de reportes; ante cambios de contrato podrían quedar labels inconsistentes.
     private void Cargar()
     {
         var now = DateTime.Now;
@@ -29,6 +32,8 @@ public partial class EstadisticasForm : Form
             : "Forma de pago más utilizada: —";
     }
 
+    // Exporta ventas del mes actual a CSV.
+    // Punto importante: usa rango [primer día, último día] del mes calendario actual.
     private void BtnExportarMes_Click(object? sender, EventArgs e)
     {
         var now = DateTime.Now;
@@ -69,6 +74,7 @@ public partial class EstadisticasForm : Form
         }
     }
 
+    // Escapa texto para CSV cuando hay caracteres conflictivos (;, comillas o salto de línea).
     private static string EscapeCsv(object? value)
     {
         var s = value?.ToString() ?? "";
@@ -77,6 +83,8 @@ public partial class EstadisticasForm : Form
         return s;
     }
 
+    // Crea una copia manual del archivo de base de datos en la ruta elegida por el usuario.
+    // Cuidado: sobrescribe si ya existe y requiere que la base sea accesible al momento de copiar.
     private void btnBackup_Click(object sender, EventArgs e)
     {
         try

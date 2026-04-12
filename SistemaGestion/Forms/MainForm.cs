@@ -7,13 +7,17 @@ namespace SistemaGestion.Forms;
 
 public partial class MainForm : Form
 {
+    // Nombre de cliente por defecto para ventas de mostrador.
     private const string ClienteVentaPorDefecto = "Mostrador";
 
     private readonly VentaService _ventaService = new();
 
+    // Constructor principal: enlaza eventos, configura grilla y estado inicial de la UI.
     public MainForm()
     {
         InitializeComponent();
+        panelFilaInferiorItems.Resize += (_, _) => AjustarAnchoEtiquetaTotal();
+        panelEntrada.SizeChanged += (_, _) => AlinearBotonAgregar();
         cmbDescuento.Items.AddRange(new object[] { "0%", "5%", "10%", "15%", "20%" });
         cmbDescuento.SelectedIndex = 0;
         cmbDescuento.SelectedIndexChanged += (_, _) => ActualizarTotal();
@@ -22,9 +26,26 @@ public partial class MainForm : Form
         txtPrecio.KeyDown += Entrada_KeyDown;
         ConfigurarGrid();
         ActualizarTotal();
+        AjustarAnchoEtiquetaTotal();
+        AlinearBotonAgregar();
         RefrescarBarraEstado();
     }
 
+    // Ubicación coherente con el ancho real del panel (evita recorte por coordenadas absurdas del diseñador).
+    private void AlinearBotonAgregar()
+    {
+        const int margenDerecho = 16;
+        btnAgregar.Left = Math.Max(0, panelEntrada.ClientSize.Width - btnAgregar.Width - margenDerecho);
+    }
+
+    // Evita que el resumen (subtotal / descuento / total) se recorte al redimensionar la ventana.
+    private void AjustarAnchoEtiquetaTotal()
+    {
+        const int margenDerecho = 8;
+        lblTotal.Width = Math.Max(120, panelFilaInferiorItems.ClientSize.Width - lblTotal.Left - margenDerecho);
+    }
+
+    // Permite agregar ítems con la tecla Enter desde campos de carga rápida.
     private void Entrada_KeyDown(object? sender, KeyEventArgs e)
     {
         if (e.KeyCode != Keys.Enter)
@@ -34,6 +55,8 @@ public partial class MainForm : Form
         BtnAgregar_Click(btnAgregar, EventArgs.Empty);
     }
 
+    // Intenta parsear precio aceptando cultura local e invariant para mejorar tolerancia de ingreso.
+    // Cuidado: admitir múltiples formatos puede generar ambigüedades si el texto es inválido o incompleto.
     private static bool TryParsePrecioTexto(string? texto, out decimal precio)
     {
         var t = texto?.Trim() ?? "";
@@ -41,6 +64,8 @@ public partial class MainForm : Form
             || decimal.TryParse(t, NumberStyles.Any, CultureInfo.InvariantCulture, out precio);
     }
 
+    // Configura columnas, estilos y eventos de edición de la grilla de ítems.
+    // Punto sensible: los nombres de columna son claves lógicas usadas en varios métodos.
     private void ConfigurarGrid()
     {
         dgvItems.Columns.Clear();
@@ -82,6 +107,7 @@ public partial class MainForm : Form
         dgvItems.DataError += (_, e) => { e.ThrowException = false; };
     }
 
+    // Convierte valores editados en celdas a tipos esperados (cantidad/precio).
     private void DgvItems_CellParsing(object? sender, DataGridViewCellParsingEventArgs e)
     {
         if (e.RowIndex < 0) return;
@@ -102,6 +128,7 @@ public partial class MainForm : Form
         }
     }
 
+    // Valida reglas de negocio por celda (producto mínimo, cantidad válida, precio > 0).
     private void DgvItems_CellValidating(object? sender, DataGridViewCellValidatingEventArgs e)
     {
         if (e.RowIndex < 0) return;
@@ -142,6 +169,7 @@ public partial class MainForm : Form
         }
     }
 
+    // Al finalizar edición, recalcula subtotal de fila y total general.
     private void DgvItems_CellEndEdit(object? sender, DataGridViewCellEventArgs e)
     {
         if (e.RowIndex < 0) return;
@@ -157,6 +185,7 @@ public partial class MainForm : Form
         ActualizarTotal();
     }
 
+    // Maneja botón "Eliminar" embebido en la grilla.
     private void DgvItems_CellContentClick(object? sender, DataGridViewCellEventArgs e)
     {
         if (e.RowIndex < 0) return;
@@ -167,12 +196,15 @@ public partial class MainForm : Form
         dgvItems.Rows.RemoveAt(e.RowIndex);
     }
 
+    // Reacciona al borrado de filas para mantener numeración y total consistentes.
     private void DgvItems_RowsRemoved(object? sender, DataGridViewRowsRemovedEventArgs e)
     {
         RenumerarFilasItems();
         ActualizarTotal();
     }
 
+    // Recalcula subtotal de una fila individual (cantidad x precio).
+    // Cuidado: captura excepciones por filas incompletas durante edición temporal.
     private static void RecalcularSubtotalFila(DataGridViewRow row)
     {
         if (row.IsNewRow) return;
@@ -188,6 +220,7 @@ public partial class MainForm : Form
         }
     }
 
+    // Renumera columna "#" de la grilla para evitar saltos tras altas/bajas.
     private void RenumerarFilasItems()
     {
         int i = 1;
@@ -198,6 +231,7 @@ public partial class MainForm : Form
         }
     }
 
+    // Agrega un ítem nuevo desde controles de entrada, con validaciones previas.
     private void BtnAgregar_Click(object? sender, EventArgs e)
     {
         var producto = txtProducto.Text.Trim();
@@ -244,6 +278,7 @@ public partial class MainForm : Form
         txtProducto.Focus();
     }
 
+    // Traduce índice de combo a porcentaje de descuento aplicado en total.
     private static decimal ObtenerPorcentajeDescuentoDesdeCombo(int selectedIndex) => selectedIndex switch
     {
         1 => 5m,
@@ -253,6 +288,7 @@ public partial class MainForm : Form
         _ => 0m,
     };
 
+    // Recalcula subtotal, descuento y total final, y actualiza etiqueta de resumen.
     public void ActualizarTotal()
     {
         decimal suma = 0;
@@ -282,6 +318,8 @@ public partial class MainForm : Form
         }
     }
 
+    // Devuelve la forma de pago elegida por radio button.
+    // Cuidado: retorna null si no hay selección, y eso bloquea el guardado.
     private string? ObtenerFormaPago()
     {
         if (rbEfectivo.Checked) return "Efectivo";
@@ -290,6 +328,8 @@ public partial class MainForm : Form
         return null;
     }
 
+    // Valida y persiste la venta completa (cabecera + detalles) usando el servicio.
+    // Punto importante: si falla guardado, el catch actual no expone detalle técnico al desarrollador.
     private void BtnGuardar_Click(object? sender, EventArgs e)
     {
         if (dgvItems.Rows.Count == 0)
@@ -349,6 +389,8 @@ public partial class MainForm : Form
         }
     }
 
+    // Limpia controles de carga para comenzar una venta nueva.
+    // Cuidado: deja cantidad en 0; el alta exige mínimo 1 y puede sorprender al usuario.
     private void LimpiarFormulario()
     {
         dgvItems.Rows.Clear();
@@ -362,26 +404,32 @@ public partial class MainForm : Form
         ActualizarTotal();
     }
 
+    // Acción rápida para reiniciar formulario.
     private void BtnLimpiar_Click(object? sender, EventArgs e) => LimpiarFormulario();
 
+    // Abre ventana modal de historial de ventas.
     private void BtnVerHistorial_Click(object? sender, EventArgs e)
     {
         using var f = new HistorialForm();
         f.ShowDialog(this);
     }
 
+    // Abre ventana modal de estadísticas.
     private void BtnEstadisticas_Click(object? sender, EventArgs e)
     {
         using var f = new EstadisticasForm();
         f.ShowDialog(this);
     }
 
+    // Abre ventana modal de gestión de ventas pendientes.
     private void BtnGestionVentas_Click(object? sender, EventArgs e)
     {
         using var f = new GestionVentasForm();
         f.ShowDialog(this);
     }
 
+    // Refresca barra de estado (fecha/hora y contador de ventas del día).
+    // Cuidado: ante error de servicio muestra fallback sin detalle.
     private void RefrescarBarraEstado()
     {
         statusFecha.Text = "Fecha: " + DateTime.Now.ToString("dddd dd/MM/yyyy HH:mm", new CultureInfo("es-AR"));
@@ -395,11 +443,13 @@ public partial class MainForm : Form
         }
     }
 
+    // Tick del timer para mantener actualizada la barra de estado.
     private void TimerReloj_Tick(object? sender, EventArgs e)
     {
         RefrescarBarraEstado();
     }
 
+    // Hook de carga inicial del formulario.
     protected override void OnLoad(EventArgs e)
     {
         base.OnLoad(e);
@@ -407,6 +457,8 @@ public partial class MainForm : Form
         RefrescarBarraEstado();
     }
 
+    // Hook de cierre (actualmente sin lógica activa).
+    // Nota: hay código comentado para liberar recursos de imagen si se vuelve a usar PictureBox.
     protected override void OnFormClosed(FormClosedEventArgs e)
     {
         //picLogo.Image?.Dispose();
@@ -414,23 +466,29 @@ public partial class MainForm : Form
         //base.OnFormClosed(e);
     }
 
+    // Intenta cargar ícono de la app desde carpeta IMAGENES (.ico prioritario, fallback .png).
+    // Cuidado: Icon.FromHandle puede requerir liberación explícita de handle en escenarios avanzados.
     private void CargarLogo()
     {
         try
         {
-            var path = Path.Combine(AppContext.BaseDirectory, "IMAGENES", "logo.png");
-            if (!File.Exists(path))
-                return;
+            var imagenesDir = Path.Combine(AppContext.BaseDirectory, "IMAGENES");
+            var iconPath = Path.Combine(imagenesDir, "logo.ico");
+            var pngPath = Path.Combine(imagenesDir, "logo.png");
 
-            //picLogo.Image?.Dispose();
-            //picLogo.Image = Image.FromFile(path);
-
-            // Icono de la barra de título (junto al título de la ventana)
-            using (var bmp = new Bitmap(path))
+            // Prioriza .ico para mantener consistencia con instalador/accesos directos.
+            if (File.Exists(iconPath))
             {
-                Icon = Icon.FromHandle(bmp.GetHicon());
+                Icon = new Icon(iconPath);
+                ShowIcon = true;
+                return;
             }
 
+            if (!File.Exists(pngPath))
+                return;
+
+            using var bmp = new Bitmap(pngPath);
+            Icon = Icon.FromHandle(bmp.GetHicon());
             ShowIcon = true;
         }
         catch
@@ -438,6 +496,4 @@ public partial class MainForm : Form
             // Si el archivo no está o es inválido, se deja el PictureBox vacío
         }
     }
-
-    //HOla
 }

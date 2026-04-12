@@ -9,6 +9,7 @@ public partial class HistorialForm : Form
 {
     private readonly VentaService _ventaService = new();
 
+    // Constructor del historial: inicializa filtros, grilla y primera carga.
     public HistorialForm()
     {
         InitializeComponent();
@@ -17,6 +18,8 @@ public partial class HistorialForm : Form
         CargarDatos();
     }
 
+    // Define valores por defecto de filtros (rango mensual actual, forma de pago y estado).
+    // Cuidado: cualquier cambio en textos de combos impacta el filtrado esperado por el servicio.
     private void ConfigurarFiltros()
     {
         var hoy = DateTime.Today;
@@ -30,6 +33,7 @@ public partial class HistorialForm : Form
         cmbEstado.SelectedIndex = 0;
     }
 
+    // Configura estructura y estilos de la grilla del historial.
     private void ConfigurarGrid()
     {
         dgvVentas.Columns.Clear();
@@ -50,6 +54,7 @@ public partial class HistorialForm : Form
         dgvVentas.Columns.Add(new DataGridViewTextBoxColumn { Name = "Estado", HeaderText = "Estado", Width = 100 });
     }
 
+    // Aplica filtros seleccionados y carga ventas resultantes en pantalla.
     private void CargarDatos()
     {
         dgvVentas.Rows.Clear();
@@ -74,8 +79,10 @@ public partial class HistorialForm : Form
         }
     }
 
+    // Evento de botón para ejecutar el filtrado actual.
     private void BtnFiltrar_Click(object? sender, EventArgs e) => CargarDatos();
 
+    // Permite abrir detalle de una venta con doble clic.
     private void DgvVentas_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
     {
         if (e.RowIndex < 0) return;
@@ -86,6 +93,7 @@ public partial class HistorialForm : Form
             AbrirDetalle(id2);
     }
 
+    // Abre la vista de detalle y refresca historial al volver.
     private void AbrirDetalle(int ventaId)
     {
         using var f = new DetalleVentaForm(ventaId);
@@ -93,6 +101,8 @@ public partial class HistorialForm : Form
         CargarDatos();
     }
 
+    // Exporta el contenido visible en la grilla a CSV (UTF-8 con BOM para mejor compatibilidad con Excel).
+    // Cuidado: exporta lo que está en UI; si hay filtros aplicados, el archivo también queda filtrado.
     private void BtnExportar_Click(object? sender, EventArgs e)
     {
         using var sfd = new SaveFileDialog
@@ -130,6 +140,7 @@ public partial class HistorialForm : Form
         }
     }
 
+    // Escapa campos con separadores/comillas/saltos de línea para mantener integridad del CSV.
     private static string EscapeCsv(object? value)
     {
         var s = value?.ToString() ?? "";

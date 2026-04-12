@@ -8,6 +8,7 @@ public partial class GestionVentasForm : Form
 {
     private readonly VentaService _ventaService = new();
 
+    // Constructor de la vista de gestión: prepara grilla y carga ventas pendientes.
     public GestionVentasForm()
     {
         InitializeComponent();
@@ -15,6 +16,8 @@ public partial class GestionVentasForm : Form
         CargarDatos();
     }
 
+    // Define columnas y estilos visuales de la grilla de ventas.
+    // Cuidado: si se cambian nombres de columna, también debe ajustarse la lectura por clave en otros métodos.
     private void ConfigurarGrid()
     {
         dgvVentas.Columns.Clear();
@@ -35,6 +38,8 @@ public partial class GestionVentasForm : Form
         dgvVentas.Columns.Add(new DataGridViewTextBoxColumn { Name = "Estado", HeaderText = "Estado", Width = 100 });
     }
 
+    // Consulta ventas pendientes en servicio y las muestra en la grilla.
+    // Cuidado: asume que ListarVentasPendientesGestion devuelve datos consistentes con las columnas configuradas.
     private void CargarDatos()
     {
         dgvVentas.Rows.Clear();
@@ -50,10 +55,12 @@ public partial class GestionVentasForm : Form
         }
 
         lblInfo.Text = dgvVentas.Rows.Count == 0
-            ? "No hay ventas pendientes de gestión."
+            ? "No hay ventas pendientes de gestión. Las ventas ya cerradas aparecen en «Ver Historial»."
             : "Seleccione una venta y pulse «Marcar como FINALIZADO» o haga doble clic para ver el detalle.";
     }
 
+    // Marca la venta seleccionada como FINALIZADO con confirmación del usuario.
+    // Punto sensible: si el ID no parsea, el método termina silenciosamente.
     private void BtnFinalizar_Click(object? sender, EventArgs e)
     {
         if (dgvVentas.CurrentRow is null || dgvVentas.CurrentRow.IsNewRow)
@@ -80,6 +87,7 @@ public partial class GestionVentasForm : Form
         }
     }
 
+    // Atajo de navegación: doble clic abre detalle de la venta elegida.
     private void DgvVentas_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
     {
         if (e.RowIndex < 0) return;
@@ -90,6 +98,7 @@ public partial class GestionVentasForm : Form
             AbrirDetalle(id2);
     }
 
+    // Abre el formulario de detalle y, al cerrar, refresca la lista por si hubo cambios de estado.
     private void AbrirDetalle(int ventaId)
     {
         using var f = new DetalleVentaForm(ventaId);
@@ -97,5 +106,6 @@ public partial class GestionVentasForm : Form
         CargarDatos();
     }
 
+    // Cierra la vista de gestión.
     private void BtnCerrar_Click(object? sender, EventArgs e) => Close();
 }

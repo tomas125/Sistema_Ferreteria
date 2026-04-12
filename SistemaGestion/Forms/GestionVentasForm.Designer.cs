@@ -48,7 +48,7 @@ partial class GestionVentasForm
         lblInfo.AutoSize = true;
         lblInfo.Location = new Point(10, 36);
         lblInfo.MaximumSize = new Size(720, 0);
-        lblInfo.Text = "Ventas que no están FINALIZADO ni Cancelado.";
+        lblInfo.Text = "Ventas nuevas quedan en Pendiente hasta marcarlas FINALIZADO aquí. El historial lista todas.";
         //
         // dgvVentas
         //

@@ -100,46 +100,6 @@ public static class DatabaseHelper
                 cmd.ExecuteNonQuery();
             }
 
-            using (var cmd = conn.CreateCommand())
-            {
-                cmd.CommandText = """
-                    CREATE TABLE IF NOT EXISTS Socios (
-                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        Nombre TEXT NOT NULL,
-                        Rol TEXT NOT NULL,
-                        Porcentaje REAL DEFAULT 33.33
-                    );
-                    """;
-                cmd.ExecuteNonQuery();
-            }
-
-            int sociosCount;
-            using (var cmd = conn.CreateCommand())
-            {
-                cmd.CommandText = "SELECT COUNT(*) FROM Socios;";
-                sociosCount = Convert.ToInt32(cmd.ExecuteScalar());
-            }
-
-            if (sociosCount == 0)
-            {
-                using var insert = conn.CreateCommand();
-                insert.CommandText = """
-                    INSERT INTO Socios (Nombre, Rol, Porcentaje) VALUES
-                    ('Socio 1', 'Especialista en IA', 33.33),
-                    ('Socio 2', 'Desarrollador Full Stack', 33.33),
-                    ('Socio 3', 'Marketing y Comercial', 33.33);
-                    """;
-                insert.ExecuteNonQuery();
-            }
-
-            using (var cmd = conn.CreateCommand())
-            {
-                cmd.CommandText = """
-                    UPDATE Ventas SET Estado = 'FINALIZADO'
-                    WHERE Estado = 'Pendiente';
-                    """;
-                cmd.ExecuteNonQuery();
-            }
         }
         catch (Exception ex)
         {

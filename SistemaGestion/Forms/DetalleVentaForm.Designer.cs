@@ -27,8 +27,6 @@ partial class DetalleVentaForm
         panelTotal = new Panel();
         lblTotalTitulo = new Label();
         lblTotalValor = new Label();
-        gbDistribucion = new GroupBox();
-        flowSocios = new FlowLayoutPanel();
         panelEstado = new Panel();
         lblCambiarEstado = new Label();
         cmbEstado = new ComboBox();
@@ -38,7 +36,6 @@ partial class DetalleVentaForm
         panelFill.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)dgvDetalle).BeginInit();
         panelTotal.SuspendLayout();
-        gbDistribucion.SuspendLayout();
         panelEstado.SuspendLayout();
         SuspendLayout();
         //
@@ -126,20 +123,6 @@ partial class DetalleVentaForm
         lblTotalValor.Location = new Point(560, 10);
         lblTotalValor.Text = "$0.00";
         //
-        // gbDistribucion
-        //
-        gbDistribucion.Controls.Add(flowSocios);
-        gbDistribucion.Dock = DockStyle.Bottom;
-        gbDistribucion.Height = 130;
-        gbDistribucion.Text = "Distribución de ganancias (socios)";
-        //
-        // flowSocios
-        //
-        flowSocios.Dock = DockStyle.Fill;
-        flowSocios.FlowDirection = FlowDirection.TopDown;
-        flowSocios.AutoScroll = true;
-        flowSocios.Padding = new Padding(8);
-        //
         // panelEstado
         //
         panelEstado.Controls.Add(lblCambiarEstado);
@@ -182,7 +165,6 @@ partial class DetalleVentaForm
         ClientSize = new Size(720, 560);
         Controls.Add(panelFill);
         Controls.Add(panelTotal);
-        Controls.Add(gbDistribucion);
         Controls.Add(panelEstado);
         Controls.Add(btnCerrar);
         Controls.Add(panelTop);
@@ -197,7 +179,6 @@ partial class DetalleVentaForm
         ((System.ComponentModel.ISupportInitialize)dgvDetalle).EndInit();
         panelTotal.ResumeLayout(false);
         panelTotal.PerformLayout();
-        gbDistribucion.ResumeLayout(false);
         panelEstado.ResumeLayout(false);
         panelEstado.PerformLayout();
         ResumeLayout(false);
@@ -214,8 +195,6 @@ partial class DetalleVentaForm
     private Panel panelTotal;
     private Label lblTotalTitulo;
     private Label lblTotalValor;
-    private GroupBox gbDistribucion;
-    private FlowLayoutPanel flowSocios;
     private Panel panelEstado;
     private Label lblCambiarEstado;
     private ComboBox cmbEstado;

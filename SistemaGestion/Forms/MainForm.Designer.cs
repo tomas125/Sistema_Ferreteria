@@ -51,6 +51,8 @@ partial class MainForm
         statusStrip = new StatusStrip();
         statusFecha = new ToolStripStatusLabel();
         statusVentasHoy = new ToolStripStatusLabel();
+        statusSeparador = new ToolStripStatusLabel();
+        statusVersion = new ToolStripStatusLabel();
         timerReloj = new System.Windows.Forms.Timer(components);
         panelSuperior.SuspendLayout();
         panelEntrada.SuspendLayout();
@@ -75,7 +77,7 @@ partial class MainForm
         panelSuperior.Dock = DockStyle.Top;
         panelSuperior.Location = new Point(0, 0);
         panelSuperior.Name = "panelSuperior";
-        panelSuperior.Size = new Size(917, 248);
+        panelSuperior.Size = new Size(917, 228);
         panelSuperior.TabIndex = 0;
         // 
         // panelEntrada
@@ -93,13 +95,13 @@ partial class MainForm
         panelEntrada.Location = new Point(0, 30);
         panelEntrada.Name = "panelEntrada";
         panelEntrada.Padding = new Padding(12, 8, 12, 8);
-        panelEntrada.Size = new Size(917, 218);
+        panelEntrada.Size = new Size(917, 198);
         panelEntrada.TabIndex = 1;
         // 
         // lblProducto
         // 
         lblProducto.AutoSize = true;
-        lblProducto.Location = new Point(15, 15);
+        lblProducto.Location = new Point(15, 10);
         lblProducto.Name = "lblProducto";
         lblProducto.Size = new Size(105, 15);
         lblProducto.TabIndex = 0;
@@ -108,15 +110,15 @@ partial class MainForm
         // txtProducto
         // 
         txtProducto.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-        txtProducto.Location = new Point(140, 12);
+        txtProducto.Location = new Point(140, 7);
         txtProducto.Name = "txtProducto";
-        txtProducto.Size = new Size(1432, 23);
+        txtProducto.Size = new Size(650, 23);
         txtProducto.TabIndex = 1;
         // 
         // lblCantidad
         // 
         lblCantidad.AutoSize = true;
-        lblCantidad.Location = new Point(15, 48);
+        lblCantidad.Location = new Point(15, 40);
         lblCantidad.Name = "lblCantidad";
         lblCantidad.Size = new Size(58, 15);
         lblCantidad.TabIndex = 2;
@@ -124,7 +126,7 @@ partial class MainForm
         // 
         // nudCantidad
         // 
-        nudCantidad.Location = new Point(140, 45);
+        nudCantidad.Location = new Point(140, 37);
         nudCantidad.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
         nudCantidad.Name = "nudCantidad";
         nudCantidad.Size = new Size(100, 23);
@@ -133,7 +135,7 @@ partial class MainForm
         // lblPrecio
         // 
         lblPrecio.AutoSize = true;
-        lblPrecio.Location = new Point(15, 81);
+        lblPrecio.Location = new Point(15, 70);
         lblPrecio.Name = "lblPrecio";
         lblPrecio.Size = new Size(60, 15);
         lblPrecio.TabIndex = 4;
@@ -142,16 +144,16 @@ partial class MainForm
         // txtPrecio
         // 
         txtPrecio.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-        txtPrecio.Location = new Point(140, 78);
+        txtPrecio.Location = new Point(140, 67);
         txtPrecio.Name = "txtPrecio";
-        txtPrecio.Size = new Size(1432, 23);
+        txtPrecio.Size = new Size(650, 23);
         txtPrecio.TabIndex = 5;
         // 
         // lblEnterHint
         // 
         lblEnterHint.AutoSize = true;
         lblEnterHint.ForeColor = SystemColors.GrayText;
-        lblEnterHint.Location = new Point(140, 108);
+        lblEnterHint.Location = new Point(140, 96);
         lblEnterHint.MaximumSize = new Size(560, 0);
         lblEnterHint.Name = "lblEnterHint";
         lblEnterHint.Size = new Size(327, 15);
@@ -160,11 +162,11 @@ partial class MainForm
         // 
         // btnAgregar
         // 
-        btnAgregar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        btnAgregar.Anchor = AnchorStyles.Top;
         btnAgregar.BackColor = Color.DodgerBlue;
         btnAgregar.FlatStyle = FlatStyle.Flat;
         btnAgregar.ForeColor = Color.White;
-        btnAgregar.Location = new Point(1437, 104);
+        btnAgregar.Location = new Point(748, 92);
         btnAgregar.Name = "btnAgregar";
         btnAgregar.Size = new Size(135, 28);
         btnAgregar.TabIndex = 7;
@@ -229,7 +231,7 @@ partial class MainForm
         panelCentral.Controls.Add(panelFilaInferiorItems);
         panelCentral.Controls.Add(panelCabeceraGrid);
         panelCentral.Dock = DockStyle.Fill;
-        panelCentral.Location = new Point(0, 248);
+        panelCentral.Location = new Point(0, 228);
         panelCentral.Name = "panelCentral";
         panelCentral.Padding = new Padding(12, 8, 12, 8);
         panelCentral.Size = new Size(917, 201);
@@ -246,7 +248,7 @@ partial class MainForm
         dgvItems.Name = "dgvItems";
         dgvItems.RowHeadersVisible = false;
         dgvItems.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-        dgvItems.Size = new Size(893, 101);
+        dgvItems.Size = new Size(893, 81);
         dgvItems.TabIndex = 1;
         // 
         // panelFilaInferiorItems
@@ -254,9 +256,10 @@ partial class MainForm
         panelFilaInferiorItems.Controls.Add(btnLimpiar);
         panelFilaInferiorItems.Controls.Add(lblTotal);
         panelFilaInferiorItems.Dock = DockStyle.Bottom;
-        panelFilaInferiorItems.Location = new Point(12, 135);
+        panelFilaInferiorItems.Location = new Point(12, 115);
         panelFilaInferiorItems.Name = "panelFilaInferiorItems";
-        panelFilaInferiorItems.Size = new Size(893, 58);
+        panelFilaInferiorItems.MinimumSize = new Size(0, 76);
+        panelFilaInferiorItems.Size = new Size(893, 76);
         panelFilaInferiorItems.TabIndex = 2;
         // 
         // btnLimpiar
@@ -265,7 +268,7 @@ partial class MainForm
         btnLimpiar.BackColor = Color.Tomato;
         btnLimpiar.FlatStyle = FlatStyle.Flat;
         btnLimpiar.ForeColor = Color.White;
-        btnLimpiar.Location = new Point(3, 8);
+        btnLimpiar.Location = new Point(3, 22);
         btnLimpiar.Name = "btnLimpiar";
         btnLimpiar.Size = new Size(120, 30);
         btnLimpiar.TabIndex = 0;
@@ -275,16 +278,16 @@ partial class MainForm
         // 
         // lblTotal
         // 
-        lblTotal.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-        lblTotal.AutoSize = true;
+        lblTotal.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+        lblTotal.AutoSize = false;
         lblTotal.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
         lblTotal.ForeColor = Color.DarkGreen;
-        lblTotal.Location = new Point(553, 4);
+        lblTotal.Location = new Point(132, 6);
         lblTotal.Name = "lblTotal";
-        lblTotal.Size = new Size(102, 20);
+        lblTotal.Size = new Size(749, 64);
         lblTotal.TabIndex = 1;
         lblTotal.Text = "TOTAL: $0.00";
-        lblTotal.TextAlign = ContentAlignment.MiddleRight;
+        lblTotal.TextAlign = ContentAlignment.TopRight;
         // 
         // panelCabeceraGrid
         // 
@@ -423,7 +426,7 @@ partial class MainForm
         // 
         // statusStrip
         // 
-        statusStrip.Items.AddRange(new ToolStripItem[] { statusFecha, statusVentasHoy });
+        statusStrip.Items.AddRange(new ToolStripItem[] { statusFecha, statusVentasHoy, statusSeparador, statusVersion });
         statusStrip.Location = new Point(0, 617);
         statusStrip.Name = "statusStrip";
         statusStrip.Size = new Size(917, 22);
@@ -442,6 +445,18 @@ partial class MainForm
         statusVentasHoy.Size = new Size(76, 17);
         statusVentasHoy.Text = "Ventas hoy: 0";
         // 
+        // statusSeparador
+        // 
+        statusSeparador.Name = "statusSeparador";
+        statusSeparador.Size = new Size(664, 17);
+        statusSeparador.Spring = true;
+        // 
+        // statusVersion
+        // 
+        statusVersion.Name = "statusVersion";
+        statusVersion.Size = new Size(73, 17);
+        statusVersion.Text = "Versión: 1.0";
+        // 
         // timerReloj
         // 
         timerReloj.Enabled = true;
@@ -459,7 +474,7 @@ partial class MainForm
         Controls.Add(statusStrip);
         Controls.Add(panelSuperior);
         Font = new Font("Segoe UI", 9F);
-        MinimumSize = new Size(700, 500);
+        MinimumSize = new Size(640, 520);
         Name = "MainForm";
         StartPosition = FormStartPosition.CenterScreen;
         Text = "Sistema de Gestión de Ventas";
@@ -523,5 +538,7 @@ partial class MainForm
     private StatusStrip statusStrip;
     private ToolStripStatusLabel statusFecha;
     private ToolStripStatusLabel statusVentasHoy;
+    private ToolStripStatusLabel statusSeparador;
+    private ToolStripStatusLabel statusVersion;
     private System.Windows.Forms.Timer timerReloj;
 }

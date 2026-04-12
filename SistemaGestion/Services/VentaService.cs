@@ -50,7 +50,7 @@ public class VentaService
                 cmd.Transaction = tx;
                 cmd.CommandText = """
                     INSERT INTO Ventas (ClienteId, Total, FormaPago, Estado)
-                    VALUES ($cid, $tot, $fp, 'FINALIZADO') RETURNING Id;
+                    VALUES ($cid, $tot, $fp, 'Pendiente') RETURNING Id;
                     """;
                 cmd.Parameters.AddWithValue("$cid", clienteId);
                 cmd.Parameters.AddWithValue("$tot", total);
@@ -301,32 +301,4 @@ public class VentaService
         }
     }
 
-    public IReadOnlyList<Socio> ListarSocios()
-    {
-        var list = new List<Socio>();
-        try
-        {
-            using var conn = DatabaseHelper.GetConnection();
-            conn.Open();
-            using var cmd = conn.CreateCommand();
-            cmd.CommandText = "SELECT Id, Nombre, Rol, Porcentaje FROM Socios ORDER BY Id;";
-            using var r = cmd.ExecuteReader();
-            while (r.Read())
-            {
-                list.Add(new Socio
-                {
-                    Id = r.GetInt32(0),
-                    Nombre = r.GetString(1),
-                    Rol = r.GetString(2),
-                    Porcentaje = r.GetDecimal(3),
-                });
-            }
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Error al listar socios: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        return list;
-    }
 }

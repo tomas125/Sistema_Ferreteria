@@ -16,8 +16,7 @@ DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=..\dist
 OutputBaseFilename=SistemaGestion_Instalador
-; SetupIconFile no se usa: ISCC rechaza logo.ico ("Resource update error: Icon file is invalid").
-;   Re-exportar el icono con Visual Studio o https://icoconvert.com/ (multi-size BMP) si querés icono en el wizard.
+SetupIconFile=..\IMAGENES\logo.ico
 ; Icono en "Agregar o quitar programas"
 UninstallDisplayIcon={app}\IMAGENES\logo.ico
 Compression=lzma2

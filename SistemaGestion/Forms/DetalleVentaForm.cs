@@ -9,6 +9,7 @@ public partial class DetalleVentaForm : Form
     private readonly int _ventaId;
     private readonly VentaService _ventaService = new();
 
+    // Constructor del detalle: recibe ID de venta, configura UI y carga datos asociados.
     public DetalleVentaForm(int ventaId)
     {
         _ventaId = ventaId;
@@ -18,6 +19,7 @@ public partial class DetalleVentaForm : Form
         CargarDatos();
     }
 
+    // Configura columnas y formato monetario del detalle de ítems vendidos.
     private void ConfigurarGrid()
     {
         dgvDetalle.Columns.Clear();
@@ -39,6 +41,8 @@ public partial class DetalleVentaForm : Form
         dgvDetalle.Columns.Add(colSub);
     }
 
+    // Carga cabecera e ítems de la venta.
+    // Cuidado: si la venta no existe, cierra el formulario para evitar operar con estado inválido.
     private void CargarDatos()
     {
         var venta = _ventaService.ObtenerVenta(_ventaId);
@@ -64,21 +68,10 @@ public partial class DetalleVentaForm : Form
         {
             dgvDetalle.Rows.Add(d.Producto, d.Cantidad, d.PrecioUnitario, d.Subtotal);
         }
-
-        flowSocios.Controls.Clear();
-        foreach (var s in _ventaService.ListarSocios())
-        {
-            decimal monto = Math.Round(venta.Total * (s.Porcentaje / 100m), 2);
-            var lbl = new Label
-            {
-                AutoSize = true,
-                Margin = new Padding(0, 2, 0, 2),
-                Text = $"{s.Nombre} ({s.Rol}): {monto.ToString("C2", CurrencyFormat.Pesos)} ({s.Porcentaje}%)",
-            };
-            flowSocios.Controls.Add(lbl);
-        }
     }
 
+    // Persiste el nuevo estado seleccionado para la venta actual.
+    // Cuidado: el catch suprime la excepción porque el servicio ya notifica; dificulta depuración técnica.
     private void BtnActualizarEstado_Click(object? sender, EventArgs e)
     {
         if (cmbEstado.SelectedItem is not string nuevo || string.IsNullOrEmpty(nuevo))
