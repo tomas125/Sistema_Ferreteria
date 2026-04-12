@@ -263,17 +263,23 @@ public static class AppUpdateService
             return;
         }
 
-        // Inno Setup: instalación silenciosa (sin asistente). Ver https://jrsoftware.org/ishelp/topic_setupcmdline.htm
-        const string silentInnoArgs = "/VERYSILENT /NORESTART /SUPPRESSMSGBOXES /CLOSEAPPLICATIONS /SP-";
-
+        // Inno Setup: instalación silenciosa. Con UseShellExecute=true Windows suele NO pasar los flags al .exe (se abre el asistente).
         try
         {
-            Process.Start(new ProcessStartInfo
+            var psi = new ProcessStartInfo
             {
                 FileName = tempPath,
-                Arguments = silentInnoArgs,
-                UseShellExecute = true,
-            });
+                UseShellExecute = false,
+                WorkingDirectory = Path.GetDirectoryName(tempPath) ?? Path.GetTempPath(),
+            };
+            // https://jrsoftware.org/ishelp/topic_setupcmdline.htm
+            psi.ArgumentList.Add("/VERYSILENT");
+            psi.ArgumentList.Add("/NORESTART");
+            psi.ArgumentList.Add("/SUPPRESSMSGBOXES");
+            psi.ArgumentList.Add("/CLOSEAPPLICATIONS");
+            psi.ArgumentList.Add("/SP-");
+            psi.ArgumentList.Add("/CURRENTUSER");
+            Process.Start(psi);
         }
         catch (Exception ex)
         {
