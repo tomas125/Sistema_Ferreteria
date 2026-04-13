@@ -1,6 +1,6 @@
 {
-  "version": "1.0.10",
-  "downloadUrl": "https://github.com/tomas125/Sistema_Ferreteria/releases/download/v1.0.10/SistemaGestion_Instalador.exe",
-  "sha256": "23BA321B6D39E682F47F7C662D4E4DBF4DA23F371549A997173BEE36D4B189F3",
-  "releaseNotes": "Historial: el filtro se aplica al cambiar fechas o listas (sin tener que pulsar Filtrar)."
+  "version": "1.0.0",
+  "downloadUrl": "https://github.com/tomas125/Sistema_Ferreteria/releases/download/v1.0.0/SistemaGestion_Instalador.exe",
+  "sha256": "88B318D5865E9BA3649EBD72A15F66746E34C0EF2B65AB126A35D427BEC3FFC9",
+  "releaseNotes": "Primera entrega al cliente (1.0.0)."
 }

@@ -9,7 +9,7 @@ static class Program
     [STAThread]
     static void Main()
     {
-        // v1.0.10
+        // v1.0.0
         // Configura el entorno base de WinForms (DPI, estilos visuales, fuente por defecto, etc.).
         ApplicationConfiguration.Initialize();
         try
