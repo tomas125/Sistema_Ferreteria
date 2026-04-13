@@ -1,6 +1,6 @@
 {
-  "version": "1.0.1",
-  "downloadUrl": "https://github.com/tomas125/Sistema_Ferreteria/releases/download/v1.0.1/SistemaGestion_Instalador.exe",
-  "sha256": "BF76DB11C3E1E4C30CA742127438FCF6AE9F8513BCCBF35EE451908ABB212BE4",
-  "releaseNotes": "Actualizacion 1.0.1 habilitada para el boton de actualizar."
+  "version": "1.1.0",
+  "downloadUrl": "https://github.com/tomas125/Sistema_Ferreteria/releases/download/v1.1.0/SistemaGestion_Instalador.exe",
+  "sha256": "B035A2F0B546F8296F22B54C83C54EC96093072D9606F387088B504A4D0801F2",
+  "releaseNotes": "Version 1.1.0 publicada para actualizar desde 1.0.10."
 }
