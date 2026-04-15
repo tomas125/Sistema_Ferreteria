@@ -56,7 +56,7 @@ public partial class GestionVentasForm : Form
 
         lblInfo.Text = dgvVentas.Rows.Count == 0
             ? "No hay ventas pendientes de gestión. Las ventas ya cerradas aparecen en «Ver Historial»."
-            : "Seleccione una venta y pulse «Marcar como FINALIZADO» o haga doble clic para ver el detalle.";
+            : "Seleccione una fila: «Marcar como FINALIZADO», «Cancelar venta» (no suma en estadísticas; queda en historial) o doble clic para el detalle.";
     }
 
     // Marca la venta seleccionada como FINALIZADO con confirmación del usuario.
@@ -83,6 +83,35 @@ public partial class GestionVentasForm : Form
         if (_ventaService.ActualizarEstado(id, "FINALIZADO"))
         {
             MessageBox.Show("Estado actualizado a FINALIZADO.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            CargarDatos();
+        }
+    }
+
+    // Marca la venta como cancelada: no cuenta como venta concretada en estadísticas; permanece en historial.
+    private void BtnCancelar_Click(object? sender, EventArgs e)
+    {
+        if (dgvVentas.CurrentRow is null || dgvVentas.CurrentRow.IsNewRow)
+        {
+            MessageBox.Show("Seleccione una venta en la grilla.", "Gestión", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
+
+        var idObj = dgvVentas.CurrentRow.Cells["Id"].Value;
+        if (idObj is not int id && !int.TryParse(idObj?.ToString(), out id))
+            return;
+
+        if (MessageBox.Show(
+                $"¿Cancelar la venta #{id}?\n\n"
+                + "No se contará como venta concretada en estadísticas ni en «Ventas hoy», "
+                + "pero seguirá visible en «Ver Historial» con estado Cancelado.",
+                "Confirmar cancelación",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning) != DialogResult.Yes)
+            return;
+
+        if (_ventaService.ActualizarEstado(id, "Cancelado"))
+        {
+            MessageBox.Show("Venta cancelada. Figura en el historial con estado Cancelado.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
             CargarDatos();
         }
     }

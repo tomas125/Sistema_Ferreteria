@@ -22,6 +22,7 @@ partial class GestionVentasForm
         dgvVentas = new DataGridView();
         panelBottom = new Panel();
         btnFinalizar = new Button();
+        btnCancelar = new Button();
         btnCerrar = new Button();
         panelTop.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)dgvVentas).BeginInit();
@@ -64,6 +65,7 @@ partial class GestionVentasForm
         // panelBottom
         //
         panelBottom.Controls.Add(btnFinalizar);
+        panelBottom.Controls.Add(btnCancelar);
         panelBottom.Controls.Add(btnCerrar);
         panelBottom.Dock = DockStyle.Bottom;
         panelBottom.Height = 44;
@@ -78,6 +80,17 @@ partial class GestionVentasForm
         btnFinalizar.ForeColor = Color.White;
         btnFinalizar.UseVisualStyleBackColor = false;
         btnFinalizar.Click += BtnFinalizar_Click;
+        //
+        // btnCancelar
+        //
+        btnCancelar.Location = new Point(220, 8);
+        btnCancelar.Size = new Size(200, 28);
+        btnCancelar.Text = "Cancelar venta (no concretada)";
+        btnCancelar.BackColor = Color.Tomato;
+        btnCancelar.FlatStyle = FlatStyle.Flat;
+        btnCancelar.ForeColor = Color.White;
+        btnCancelar.UseVisualStyleBackColor = false;
+        btnCancelar.Click += BtnCancelar_Click;
         //
         // btnCerrar
         //
@@ -113,5 +126,6 @@ partial class GestionVentasForm
     private DataGridView dgvVentas;
     private Panel panelBottom;
     private Button btnFinalizar;
+    private Button btnCancelar;
     private Button btnCerrar;
 }

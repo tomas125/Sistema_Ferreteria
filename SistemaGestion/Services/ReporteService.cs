@@ -29,7 +29,7 @@ public class ReporteService
             {
                 cmd.CommandText = """
                     SELECT IFNULL(SUM(Total), 0) FROM Ventas
-                    WHERE date(FechaVenta) >= date($ini) AND date(FechaVenta) <= date($fin)
+                    WHERE date(FechaVenta, 'localtime') >= date($ini) AND date(FechaVenta, 'localtime') <= date($fin)
                     AND Estado IN ('FINALIZADO', 'Pendiente', 'En Curso', 'Entregado');
                     """;
                 cmd.Parameters.AddWithValue("$ini", inicioStr);
@@ -41,7 +41,8 @@ public class ReporteService
             {
                 cmd.CommandText = """
                     SELECT FormaPago, COUNT(*) AS c FROM Ventas
-                    WHERE date(FechaVenta) >= date($ini) AND date(FechaVenta) <= date($fin)
+                    WHERE date(FechaVenta, 'localtime') >= date($ini) AND date(FechaVenta, 'localtime') <= date($fin)
+                    AND Estado IN ('FINALIZADO', 'Pendiente', 'En Curso', 'Entregado')
                     GROUP BY FormaPago ORDER BY c DESC LIMIT 1;
                     """;
                 cmd.Parameters.AddWithValue("$ini", inicioStr);

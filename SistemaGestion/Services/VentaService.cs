@@ -93,7 +93,8 @@ public class VentaService
             using var cmd = conn.CreateCommand();
             cmd.CommandText = """
                 SELECT COUNT(*) FROM Ventas
-                WHERE date(FechaVenta) = date('now', 'localtime');
+                WHERE date(FechaVenta, 'localtime') = date('now', 'localtime')
+                AND Estado <> 'Cancelado';
                 """;
             return Convert.ToInt32(cmd.ExecuteScalar());
         }
@@ -125,13 +126,14 @@ public class VentaService
 
             if (desde.HasValue)
             {
-                sql += " AND date(v.FechaVenta) >= date($desde)";
+                // FechaVenta se guarda en UTC (datetime('now')); al filtrar por calendario local hay que alinear.
+                sql += " AND date(v.FechaVenta, 'localtime') >= date($desde)";
                 cmd.Parameters.AddWithValue("$desde", desde.Value.ToString("yyyy-MM-dd"));
             }
 
             if (hasta.HasValue)
             {
-                sql += " AND date(v.FechaVenta) <= date($hasta)";
+                sql += " AND date(v.FechaVenta, 'localtime') <= date($hasta)";
                 cmd.Parameters.AddWithValue("$hasta", hasta.Value.ToString("yyyy-MM-dd"));
             }
 
