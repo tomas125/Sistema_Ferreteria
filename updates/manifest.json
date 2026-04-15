@@ -1,6 +1,6 @@
 {
-  "version": "1.1.0",
-  "downloadUrl": "https://github.com/tomas125/Sistema_Ferreteria/releases/download/v1.1.0/SistemaGestion_Instalador.exe",
-  "sha256": "B035A2F0B546F8296F22B54C83C54EC96093072D9606F387088B504A4D0801F2",
-  "releaseNotes": "Version 1.1.0 publicada para actualizar desde 1.0.10."
+  "version": "1.2.0",
+  "downloadUrl": "https://github.com/tomas125/Sistema_Ferreteria/releases/download/v1.2.0/SistemaGestion_Instalador.exe",
+  "sha256": "C5C5D15BB6DC14D28EF8ED26D5F5C46E9BA1CDE4059920B14BB71CE6A65274D9",
+  "releaseNotes": "1.2.0: cancelar venta desde Gestión (no suma en estadísticas; visible en historial). Fechas de historial alineadas a hora local. Mejoras previas de UI y actualización."
 }
